@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+data/
+*.sqlite3*
+*.db*
+__pycache__/
+*.pyc
+state*.json
+artifacts/private/
+evaluation/private/
+dist/
+.venv/
