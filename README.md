@@ -89,7 +89,7 @@ Publish this directory as the root of your new repository. Replace YOUR_REPO
 with its real public URL; no repository has been created automatically.
 
 ~~~bash
-git clone YOUR_REPO Chronicle-Memory-Tracks
+git clone [Chronicle-Memory-Tracks](https://github.com/simple-boy/Chronicle-memory-tracks.git)
 cd Chronicle-Memory-Tracks
 python -m venv .venv
 . .venv/bin/activate
