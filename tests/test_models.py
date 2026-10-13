@@ -92,6 +92,7 @@ class ModelClientTests(unittest.TestCase):
     def test_from_env_reads_explicit_configuration_and_freezes_budgets_without_key(self):
         environment = {
             "MODEL_PROVIDER": "openai", "OPENAI_API_KEY": TEST_KEY,
+            "OPENAI_BASE_URL": "https://quanzil.com/v1/",
             "ADD_MODEL": "gpt-4o-mini-2024-07-18", "VISION_DETAIL": "low",
             "MODEL_TIMEOUT_SECONDS": "2.5", "MODEL_MAX_CALLS_PER_ADD": "3",
             "MODEL_ADD_BUDGET_SECONDS": "7.5",
@@ -100,6 +101,7 @@ class ModelClientTests(unittest.TestCase):
             client = ModelClient.from_env()
         config = client.config_dict()
         self.assertEqual(config["provider"], "openai")
+        self.assertEqual(config["base_url"], "https://quanzil.com/v1")
         self.assertEqual(config["model"], environment["ADD_MODEL"])
         self.assertEqual(config["vision_detail"], "low")
         self.assertEqual(config["timeout"], 2.5)
@@ -110,6 +112,25 @@ class ModelClientTests(unittest.TestCase):
         self.assertNotIn(TEST_KEY, json.dumps(config))
         with patch.dict(os.environ, {}, clear=True):
             self.assertFalse(ModelClient.from_env().enabled)
+        self.urlopen.assert_not_called()
+
+    def test_compatible_base_url_routes_request_and_keeps_authentication(self):
+        self.successful_opener()
+        client = self.client(base_url=" https://quanzil.com/v1/// ")
+        self.assertEqual(client.index_code("def source(): pass"), "observed retrieval index")
+        request = self.urlopen.call_args.args[0]
+        self.assertEqual(request.full_url, "https://quanzil.com/v1/chat/completions")
+        self.assertEqual(request.get_header("Authorization"), "Bearer " + TEST_KEY)
+        self.assertEqual(json.loads(request.data)["model"], "gpt-4o-mini")
+        self.assertNotIn(TEST_KEY, json.dumps(client.config_dict()))
+
+    def test_invalid_base_urls_are_rejected_before_network(self):
+        for base_url in (None, "", "http://example.com/v1", "https:///v1",
+                         "https://user:secret@example.com/v1", "https://example.com/v1?key=secret",
+                         "https://example.com/v1#secret", "https://exa mple.com/v1",
+                         "https://example.com/v1/chat/completions", "https://example.com:invalid/v1"):
+            with self.subTest(base_url=base_url), self.assertRaises(ValueError):
+                self.client(base_url=base_url)
         self.urlopen.assert_not_called()
 
     def test_timeouts_and_add_deadline_budget_must_be_positive_and_finite(self):

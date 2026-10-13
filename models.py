@@ -7,6 +7,7 @@ import os
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 from records import ProviderError
@@ -15,7 +16,8 @@ from records import ProviderError
 class ModelClient:
     def __init__(self, *, mode: str = "none", api_key: str = "", model: str = "gpt-4o-mini",
                  timeout: float = 90, max_calls_per_add: int = 64, image_detail: str = "high",
-                 max_output_tokens: int = 384, add_budget_seconds: float = 1200):
+                 max_output_tokens: int = 384, add_budget_seconds: float = 1200,
+                 base_url: str = "https://api.openai.com/v1"):
         if mode not in {"none", "openai"}:
             raise ValueError("MODEL_PROVIDER must be none or openai")
         if mode == "openai" and not api_key:
@@ -29,6 +31,18 @@ class ModelClient:
         if any(isinstance(value, bool) or not isinstance(value, int) or value < 1
                for value in (max_calls_per_add, max_output_tokens)):
             raise ValueError("Model call and output budgets must be positive")
+        if not isinstance(base_url, str):
+            raise ValueError("OPENAI_BASE_URL must be an HTTPS API base URL")
+        base_url = base_url.strip().rstrip("/")
+        parsed = urllib.parse.urlsplit(base_url)
+        if (parsed.scheme != "https" or not parsed.hostname or parsed.username is not None
+                or parsed.password is not None or parsed.query or parsed.fragment
+                or any(character.isspace() or ord(character) < 32 for character in base_url)
+                or parsed.path.endswith("/chat/completions")):
+            raise ValueError("OPENAI_BASE_URL must be an HTTPS base URL without credentials, query or fragment")
+        # Validate an explicit port before accepting the deployment configuration.
+        parsed.port
+        self.base_url = base_url
         self.mode, self.api_key, self.model = mode, api_key, model
         self.timeout, self.max_calls_per_add = timeout, max_calls_per_add
         self.image_detail, self.max_output_tokens = image_detail, max_output_tokens
@@ -38,6 +52,7 @@ class ModelClient:
     @classmethod
     def from_env(cls):
         return cls(mode=os.getenv("MODEL_PROVIDER", "none"), api_key=os.getenv("OPENAI_API_KEY", ""),
+                   base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
                    model=os.getenv("ADD_MODEL", "gpt-4o-mini"),
                    timeout=float(os.getenv("MODEL_TIMEOUT_SECONDS", "90")),
                    max_calls_per_add=int(os.getenv("MODEL_MAX_CALLS_PER_ADD", "64")),
@@ -49,7 +64,8 @@ class ModelClient:
         return self.mode == "openai"
 
     def config_dict(self):
-        return {"provider": self.mode, "model": self.model, "vision_detail": self.image_detail,
+        return {"provider": self.mode, "base_url": self.base_url,
+                "model": self.model, "vision_detail": self.image_detail,
                 "max_output_tokens": self.max_output_tokens, "prompt_version": "index-v1",
                 "timeout": self.timeout, "max_calls_per_add": self.max_calls_per_add,
                 "add_budget_seconds": self.add_budget_seconds}
@@ -68,7 +84,7 @@ class ModelClient:
             self.start_add()
         payload = {"model": self.model, "temperature": 0, "max_tokens": self.max_output_tokens,
                    "messages": [{"role": "system", "content": system}, {"role": "user", "content": content}]}
-        request = urllib.request.Request("https://api.openai.com/v1/chat/completions",
+        request = urllib.request.Request(self.base_url + "/chat/completions",
                     data=json.dumps(payload).encode("utf-8"), method="POST",
                     headers={"Authorization": "Bearer " + self.api_key, "Content-Type": "application/json"})
         for attempt in range(2):

@@ -9,6 +9,12 @@ Status: runnable participant-side implementation; local tests and synthetic
 diagnostics only. No official Smoke/Full, real GPT inference, Docker build or
 new public deployment is claimed.
 
+ `OPENAI_API_KEY` is
+the model provider credential; `MEMORY_API_KEY` is the separate credential
+submitted to AML. `OPENAI_BASE_URL` defaults to `https://api.openai.com/v1`
+and accepts an explicit HTTPS API base; provider identity and pricing must be
+disclosed and verified separately.
+
 ## Overview and motivation
 
 Text memory alone loses code punctuation and visual evidence. Chronicle-Code
@@ -68,6 +74,15 @@ file SHA256, dHash and RGB histogram intersection. These are appearance
 heuristics, **not semantic embeddings or calibrated probabilities**.
 Text questions retrieve Add captions through FTS. Search uses no GPT call.
 
+### Compared with Chronicle-Memory V2 text version
+
+The unchanged memory_core.py remains the retrieval foundation. The new store
+separates original evidence from derived indexes, avoids prose deletion of code,
+accepts ordered image/text parts, and freezes per-track configuration. It adds
+domain scoring and synchronous Add model adaptation. It does not pretend to
+implement a knowledge graph database, learned multimodal embedding, consolidation
+agent, or code execution verifier.
+
 ## Installation
 
 Publish this directory as the root of your new repository. Replace YOUR_REPO
@@ -103,7 +118,7 @@ In a separate terminal:
 
 ~~~bash
 export MEMORY_API_KEY=local-test-only
-python -B scripts/smoke.py --base-url http://127.0.0.1:8001 --track coding --state state-coding.json --check-auth
+python -B scripts/smoke.py --base-url http://127.0.0.1:8000 --track coding --state state-coding.json --check-auth
 ~~~
 
 For Vision use MEMORY_TRACK=multimodal, PORT=8002 and a separate DB; pass
@@ -154,7 +169,8 @@ Bootstrap limits directory ownership changes to /app/data and drops privileges
 to UID/GID 10001 before starting the service.
 
 Deployment variables: MEMORY_TRACK, MEMORY_DB_PATH, MEMORY_API_KEY,
-MODEL_PROVIDER=openai, OPENAI_API_KEY, ADD_MODEL=gpt-4o-mini, PRODUCTION=1.
+MODEL_PROVIDER=openai, OPENAI_API_KEY, OPENAI_BASE_URL,
+ADD_MODEL=gpt-4o-mini, PRODUCTION=1.
 Keep keys in your host's private environment settings. Different model, track,
 processor or retrieval configuration requires a new DB and a declared version.
 Freeze the Git commit and disable auto-deployment during formal evaluation.
@@ -167,6 +183,25 @@ python -B evaluation/coding_diagnostic.py --output artifacts/private/coding-diag
 python -B scripts/estimate_cost.py --code-chunks 1000 --images 1000 --width 1024 --height 1024 --detail high
 ~~~
 
+The diagnostic has 100 deterministic, hand-written cases and only four in-scope
+records per query. It is a feature stress check, not CAMBench and not a held-out
+benchmark. Do not promote its perfect retrieval figures to competition accuracy.
+ Official scores remain null until actual AML Smoke/Full and review.
+
+## Limitations
+
+No live GPT compatibility, official score, full-scale latency, deployment durability
+or Docker success has been established here. No embedding is used; confirm this
+configuration's Open-source Methods eligibility because official pages differ
+in model wording. Vision can confuse similar colors/layouts and image-heavy
+questions may need stronger semantic retrieval. Captions may omit or invent
+details; original evidence stays available to AML's answerer. Scope-wide visual
+scans and duplicate Base64 source storage grow with image count.
+
+There is no automatic cross-run life-history inference, repository identity
+oracle, contradiction engine or periodic forgetting. Maintain run-to-user cleanup
+records and delete all evaluation data and derived copies within the official
+30-day deadline, including host snapshots/backups. See scripts/purge.py.
 
 ## License and acknowledgement
 
