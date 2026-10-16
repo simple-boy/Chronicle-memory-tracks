@@ -1,4 +1,6 @@
-* text=auto
-*.sh text eol=lf
-Dockerfile text eol=lf
-memory_core.py -text
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.zip binary

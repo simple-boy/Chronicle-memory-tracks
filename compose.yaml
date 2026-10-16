@@ -1,0 +1,42 @@
+name: forgetrace
+services:
+  memory:
+    image: forgetrace:${IMAGE_TAG:-0.1.0}
+    build:
+      context: .
+      args:
+        SOURCE_COMMIT: ${SOURCE_COMMIT:-unfixed}
+        BASE_IMAGE: ${BASE_IMAGE:-python:3.11-slim-bookworm}
+        FORGE_PIP_INDEX: ${FORGE_PIP_INDEX:-https://pypi.org/simple}
+    container_name: forgetrace
+    env_file:
+      - .env
+    environment:
+      MEMORY_DB_PATH: /app/data/forgetrace.sqlite3
+      PYTHONPATH: /app/src
+      PRODUCTION: "1"
+    ports:
+      - "${BIND_HOST:-0.0.0.0}:${PUBLIC_PORT:-8005}:8000"
+    volumes:
+      - memory_data:/app/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=33554432,mode=1777
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETUID, SETGID]
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: ${MEMORY_LIMIT:-1024m}
+    cpus: ${CPU_LIMIT:-1.5}
+    pids_limit: 128
+    stop_grace_period: 30m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  memory_data:
+    name: forgetrace_data

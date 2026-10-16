@@ -1,0 +1,196 @@
+{
+  "status": "passed",
+  "cloud_deployment": "not_run",
+  "official_smoke": "not_run",
+  "official_full": "not_run",
+  "real_model_calls": 0,
+  "synthetic_only": true,
+  "container_memory_bytes": 1073741824,
+  "container_cpus": 1.5,
+  "container": "forgetrace-local-verification-203246d542fe",
+  "volume": "forgetrace-local-verification-203246d542fe",
+  "image_tag": "forgetrace:locked-local-test",
+  "base_image_override": "python:3.11-slim",
+  "package_index_override": "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple",
+  "source_sha256": {
+    "src/forgetrace/__init__.py": "24b1a52cb0eb227afdae0f1ef848ef7a5542ccc332bf71721d2591fff00d63fa",
+    "src/forgetrace/api.py": "09ab4c4e561b3caed51ae08f781e558f23b004a49824fcb376466498b6069894",
+    "src/forgetrace/config.py": "98e3ef5092281cf17b9987c118086e8fc8dc595bcedb215dc44d870510d4bfb5",
+    "src/forgetrace/models.py": "1263494d73a64eb987e7d0e7f211c0bd90c9643dde22d554f972d7e2c835b75d",
+    "src/forgetrace/parsing.py": "89e707aa97454acaf91529f0b3003765e2770f75125127c98f4f2c82613326cb",
+    "src/forgetrace/retrieval.py": "a092c8477ee536c07d06ee00c32e9c19a06bedd77cdadc320a00a582eaf1f530",
+    "src/forgetrace/storage.py": "179a337bf3e6640d4d141d529eb56970f394176a53638b9f3d21919241c93cb3",
+    "src/forgetrace/validation.py": "f81ee61c219bca9127e820d2af363b98fa4af9909ab084badabc50c4bbf9d675"
+  },
+  "docker_version": "29.8.2",
+  "image_id": "sha256:bebe1b17ec00379402be576683dff1e6e83b3457d0768620eb4111b91433fb1a",
+  "health": {
+    "status": "ok",
+    "service": "forgetrace",
+    "strategy": "proposed",
+    "synchronous": 2,
+    "journal_mode": "wal",
+    "configuration_sha256": "19c79391d2217716ea9d70c4dbd195118b6eafcf36514c1104af2b99da9c9d22",
+    "model_mode": "offline",
+    "embedding_mode": "none",
+    "diagnostic_only": true,
+    "submission_ready": false,
+    "track": "coding",
+    "version": "0.1.0",
+    "commit": "unfixed",
+    "source_sha256": "0f5c9ddd3cfd08186970d557535c5013cfad20d57120ca5074085d4ff2153061"
+  },
+  "runtime_source_matches": true,
+  "application_uids": [
+    10001
+  ],
+  "write_and_immediate_read": {
+    "health": "passed",
+    "health_seconds": 0.003681,
+    "server_version": "0.1.0",
+    "server_commit": "unfixed",
+    "model_mode": "offline",
+    "diagnostic_only": true,
+    "official_smoke": "not_run",
+    "official_full": "not_run",
+    "authentication": "passed",
+    "add": "passed",
+    "add_seconds": 0.059366,
+    "idempotency": "passed",
+    "changed_payload_conflict": "passed",
+    "search": "passed",
+    "search_seconds": 0.00329,
+    "source_faithfulness": "passed",
+    "stable_id": "passed",
+    "user_isolation": "passed"
+  },
+  "capacity": {
+    "workers": 2,
+    "requests": 8,
+    "errors": 0,
+    "elapsed_seconds": 0.938809,
+    "outcomes": [
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.06998491299964371
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.1896687970001949
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.2401654059995053
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.24047241100015526
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.24778652699933446
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.24703630399926624
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.2654956480000692
+      },
+      {
+        "status": 200,
+        "ack_valid": true,
+        "seconds": 0.2222880270001042
+      }
+    ]
+  },
+  "metrics_before_restart": {
+    "uptime_seconds": 1.71,
+    "completed": {
+      "search_401": 1,
+      "add_200": 10,
+      "add_409": 1,
+      "search_200": 11
+    },
+    "active": {
+      "add": 0,
+      "search": 0
+    },
+    "duration_ms_sum": {
+      "add": 1763.439,
+      "search": 28.542
+    },
+    "received_bytes": 5915,
+    "storage": {
+      "add_requests": 9,
+      "deduplicated_requests": 1,
+      "messages": 11,
+      "chunks": 11,
+      "source_bytes": 1309,
+      "add_seconds": 1.751543987000332,
+      "parse_seconds": 0.006167261002701707,
+      "commit_seconds": 0.9475338859992917,
+      "write_lock_wait_seconds": 0.7917384979991766,
+      "search_requests": 10,
+      "search_seconds": 0.022873104995596805,
+      "closure_bundles": 2,
+      "closure_budget_skips": 0,
+      "database_bytes": 861088,
+      "disk_free_bytes": 942659321856,
+      "model_http_attempts": 0,
+      "llm_calls": 0,
+      "embedding_calls": 0,
+      "model_retries": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "embedding_tokens": 0,
+      "model_seconds": 0.0,
+      "rejected_anchors": 0,
+      "sampled_model_input_bytes": 0
+    }
+  },
+  "read_after_restart": {
+    "health": "passed",
+    "health_seconds": 0.002412,
+    "server_version": "0.1.0",
+    "server_commit": "unfixed",
+    "model_mode": "offline",
+    "diagnostic_only": true,
+    "official_smoke": "not_run",
+    "official_full": "not_run",
+    "authentication": "passed",
+    "search": "passed",
+    "search_seconds": 0.005138,
+    "source_faithfulness": "passed",
+    "stable_id": "passed",
+    "user_isolation": "passed"
+  },
+  "read_after_sigkill": {
+    "health": "passed",
+    "health_seconds": 0.002696,
+    "server_version": "0.1.0",
+    "server_commit": "unfixed",
+    "model_mode": "offline",
+    "diagnostic_only": true,
+    "official_smoke": "not_run",
+    "official_full": "not_run",
+    "authentication": "passed",
+    "search": "passed",
+    "search_seconds": 0.00568,
+    "source_faithfulness": "passed",
+    "stable_id": "passed",
+    "user_isolation": "passed"
+  },
+  "missing_model_key_fails_closed": true,
+  "compose_config": "passed",
+  "source_snapshot_unchanged": true,
+  "retained_container_state": "stopped"
+}

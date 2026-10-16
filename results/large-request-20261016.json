@@ -1,0 +1,1276 @@
+{
+  "status": "passed",
+  "synthetic_only": true,
+  "real_model_calls": 0,
+  "official_smoke": "not_run",
+  "official_full": "not_run",
+  "cases": [
+    {
+      "requests": [
+        {
+          "label": "1048576-bytes",
+          "source_bytes": 1048576,
+          "http_request_bytes": 1058052,
+          "add_http_status": 200,
+          "add_seconds": 2.2413004339996405,
+          "ack_valid": true,
+          "search_http_status": 200,
+          "search_seconds": 0.09143707700059167,
+          "exact_tail_immediately_retrieved": true,
+          "total_seconds": 2.3377367189987126,
+          "passed": true
+        }
+      ],
+      "concurrency": 1,
+      "wall_seconds": 2.8371199450011773,
+      "docker_stats": {
+        "sample_count": 4,
+        "sample_parse_errors": 5,
+        "sampled_peak_docker_memory_bytes": 65588428,
+        "sampled_peak_cpu_percent": 97.49,
+        "sampled_peak_pids": 2,
+        "samples": [
+          {
+            "monotonic": 12494.024567444,
+            "docker_memory_usage_bytes": 44616908,
+            "cpu_percent": 0.01,
+            "pids": 2
+          },
+          {
+            "monotonic": 12494.513233737,
+            "docker_memory_usage_bytes": 44616908,
+            "cpu_percent": 0.01,
+            "pids": 2
+          },
+          {
+            "monotonic": 12495.02464824,
+            "docker_memory_usage_bytes": 65588428,
+            "cpu_percent": 97.49,
+            "pids": 2
+          },
+          {
+            "monotonic": 12495.51284526,
+            "docker_memory_usage_bytes": 65588428,
+            "cpu_percent": 97.49,
+            "pids": 2
+          }
+        ]
+      },
+      "cgroup_before": {
+        "memory.current": 48918528,
+        "memory.peak": 52645888,
+        "memory.max": 1073741824,
+        "memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "memory.stat": {
+          "anon": 45121536,
+          "file": 32768,
+          "kernel": 1785856,
+          "kernel_stack": 49152,
+          "pagetables": 430080,
+          "sec_pagetables": 0,
+          "percpu": 11024,
+          "sock": 0,
+          "vmalloc": 24576,
+          "shmem": 0,
+          "file_mapped": 32768,
+          "file_dirty": 32768,
+          "file_writeback": 0,
+          "swapcached": 0,
+          "anon_thp": 0,
+          "file_thp": 0,
+          "shmem_thp": 0,
+          "inactive_anon": 44982272,
+          "active_anon": 8192,
+          "inactive_file": 12288,
+          "active_file": 0,
+          "unevictable": 0,
+          "slab_reclaimable": 912096,
+          "slab_unreclaimable": 342152,
+          "slab": 1254248,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "workingset_nodereclaim": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_proactive": 0,
+          "pgscan": 0,
+          "pgsteal": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_proactive": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_proactive": 0,
+          "pgfault": 22098,
+          "pgmajfault": 0,
+          "pgrefill": 0,
+          "pgactivate": 0,
+          "pgdeactivate": 0,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_fault_alloc": 0,
+          "thp_collapse_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0
+        }
+      },
+      "cgroup_after": {
+        "memory.current": 68972544,
+        "memory.peak": 72814592,
+        "memory.max": 1073741824,
+        "memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "memory.stat": {
+          "anon": 61820928,
+          "file": 2523136,
+          "kernel": 1699840,
+          "kernel_stack": 49152,
+          "pagetables": 311296,
+          "sec_pagetables": 0,
+          "percpu": 10608,
+          "sock": 0,
+          "vmalloc": 24576,
+          "shmem": 0,
+          "file_mapped": 32768,
+          "file_dirty": 32768,
+          "file_writeback": 0,
+          "swapcached": 0,
+          "anon_thp": 0,
+          "file_thp": 0,
+          "shmem_thp": 0,
+          "inactive_anon": 61804544,
+          "active_anon": 8192,
+          "inactive_file": 122880,
+          "active_file": 2400256,
+          "unevictable": 0,
+          "slab_reclaimable": 990968,
+          "slab_unreclaimable": 290720,
+          "slab": 1281688,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "workingset_nodereclaim": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_proactive": 0,
+          "pgscan": 0,
+          "pgsteal": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_proactive": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_proactive": 0,
+          "pgfault": 37544,
+          "pgmajfault": 0,
+          "pgrefill": 0,
+          "pgactivate": 586,
+          "pgdeactivate": 0,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_fault_alloc": 0,
+          "thp_collapse_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0
+        }
+      },
+      "oom_kill_delta": 0,
+      "container_oom_killed": false,
+      "restart_count": 0,
+      "passed": true
+    },
+    {
+      "requests": [
+        {
+          "label": "8388608-bytes",
+          "source_bytes": 8388608,
+          "http_request_bytes": 8463040,
+          "add_http_status": 200,
+          "add_seconds": 16.00406492899856,
+          "ack_valid": true,
+          "search_http_status": 200,
+          "search_seconds": 0.6191511249999166,
+          "exact_tail_immediately_retrieved": true,
+          "total_seconds": 16.662591098998746,
+          "passed": true
+        }
+      ],
+      "concurrency": 1,
+      "wall_seconds": 17.17094557499877,
+      "docker_stats": {
+        "sample_count": 33,
+        "sample_parse_errors": 34,
+        "sampled_peak_docker_memory_bytes": 242325913,
+        "sampled_peak_cpu_percent": 104.95,
+        "sampled_peak_pids": 4,
+        "samples": [
+          {
+            "monotonic": 12497.650096041,
+            "docker_memory_usage_bytes": 94350868,
+            "cpu_percent": 0.03,
+            "pids": 4
+          },
+          {
+            "monotonic": 12498.150244944,
+            "docker_memory_usage_bytes": 94350868,
+            "cpu_percent": 0.03,
+            "pids": 4
+          },
+          {
+            "monotonic": 12498.638621758,
+            "docker_memory_usage_bytes": 79859548,
+            "cpu_percent": 104.95,
+            "pids": 3
+          },
+          {
+            "monotonic": 12499.145012893,
+            "docker_memory_usage_bytes": 79859548,
+            "cpu_percent": 104.95,
+            "pids": 3
+          },
+          {
+            "monotonic": 12499.638776891,
+            "docker_memory_usage_bytes": 91488256,
+            "cpu_percent": 96.95,
+            "pids": 3
+          },
+          {
+            "monotonic": 12500.150277805,
+            "docker_memory_usage_bytes": 91488256,
+            "cpu_percent": 96.95,
+            "pids": 3
+          },
+          {
+            "monotonic": 12500.649663027,
+            "docker_memory_usage_bytes": 115867648,
+            "cpu_percent": 97.59,
+            "pids": 3
+          },
+          {
+            "monotonic": 12501.150729912,
+            "docker_memory_usage_bytes": 115867648,
+            "cpu_percent": 97.59,
+            "pids": 3
+          },
+          {
+            "monotonic": 12501.649506962,
+            "docker_memory_usage_bytes": 134008012,
+            "cpu_percent": 97.18,
+            "pids": 3
+          },
+          {
+            "monotonic": 12502.150592696,
+            "docker_memory_usage_bytes": 134008012,
+            "cpu_percent": 97.18,
+            "pids": 3
+          },
+          {
+            "monotonic": 12502.64950027,
+            "docker_memory_usage_bytes": 153406668,
+            "cpu_percent": 96.92,
+            "pids": 3
+          },
+          {
+            "monotonic": 12503.150606601,
+            "docker_memory_usage_bytes": 153406668,
+            "cpu_percent": 96.92,
+            "pids": 3
+          },
+          {
+            "monotonic": 12503.648911982,
+            "docker_memory_usage_bytes": 226072985,
+            "cpu_percent": 97.63,
+            "pids": 3
+          },
+          {
+            "monotonic": 12504.150023151,
+            "docker_memory_usage_bytes": 226072985,
+            "cpu_percent": 97.63,
+            "pids": 3
+          },
+          {
+            "monotonic": 12504.648780897,
+            "docker_memory_usage_bytes": 242325913,
+            "cpu_percent": 96.73,
+            "pids": 3
+          },
+          {
+            "monotonic": 12505.149799308,
+            "docker_memory_usage_bytes": 242325913,
+            "cpu_percent": 96.73,
+            "pids": 3
+          },
+          {
+            "monotonic": 12505.648934586,
+            "docker_memory_usage_bytes": 242325913,
+            "cpu_percent": 97.6,
+            "pids": 3
+          },
+          {
+            "monotonic": 12506.150241559,
+            "docker_memory_usage_bytes": 242325913,
+            "cpu_percent": 97.6,
+            "pids": 3
+          },
+          {
+            "monotonic": 12506.648600906,
+            "docker_memory_usage_bytes": 242325913,
+            "cpu_percent": 97.1,
+            "pids": 3
+          },
+          {
+            "monotonic": 12507.150952945,
+            "docker_memory_usage_bytes": 242325913,
+            "cpu_percent": 97.1,
+            "pids": 3
+          },
+          {
+            "monotonic": 12507.64916439,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.0,
+            "pids": 3
+          },
+          {
+            "monotonic": 12508.150511202,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.0,
+            "pids": 3
+          },
+          {
+            "monotonic": 12508.648158827,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.51,
+            "pids": 3
+          },
+          {
+            "monotonic": 12509.150510688,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.51,
+            "pids": 3
+          },
+          {
+            "monotonic": 12509.648202497,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.41,
+            "pids": 3
+          },
+          {
+            "monotonic": 12510.150654289,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.41,
+            "pids": 3
+          },
+          {
+            "monotonic": 12510.647942572,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.42,
+            "pids": 3
+          },
+          {
+            "monotonic": 12511.150331441,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.42,
+            "pids": 3
+          },
+          {
+            "monotonic": 12511.647354697,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.07,
+            "pids": 3
+          },
+          {
+            "monotonic": 12512.150738361,
+            "docker_memory_usage_bytes": 155294105,
+            "cpu_percent": 97.07,
+            "pids": 3
+          },
+          {
+            "monotonic": 12512.647978342,
+            "docker_memory_usage_bytes": 187065958,
+            "cpu_percent": 42.6,
+            "pids": 3
+          },
+          {
+            "monotonic": 12513.138778215,
+            "docker_memory_usage_bytes": 187065958,
+            "cpu_percent": 42.6,
+            "pids": 3
+          },
+          {
+            "monotonic": 12513.64780113,
+            "docker_memory_usage_bytes": 131281715,
+            "cpu_percent": 20.14,
+            "pids": 2
+          }
+        ]
+      },
+      "cgroup_before": {
+        "memory.current": 68534272,
+        "memory.peak": 72814592,
+        "memory.max": 1073741824,
+        "memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "memory.stat": {
+          "anon": 61816832,
+          "file": 2523136,
+          "kernel": 1708032,
+          "kernel_stack": 49152,
+          "pagetables": 315392,
+          "sec_pagetables": 0,
+          "percpu": 11440,
+          "sock": 0,
+          "vmalloc": 24576,
+          "shmem": 0,
+          "file_mapped": 32768,
+          "file_dirty": 32768,
+          "file_writeback": 0,
+          "swapcached": 0,
+          "anon_thp": 0,
+          "file_thp": 0,
+          "shmem_thp": 0,
+          "inactive_anon": 61743104,
+          "active_anon": 8192,
+          "inactive_file": 122880,
+          "active_file": 2400256,
+          "unevictable": 0,
+          "slab_reclaimable": 990968,
+          "slab_unreclaimable": 305056,
+          "slab": 1296024,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "workingset_nodereclaim": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_proactive": 0,
+          "pgscan": 0,
+          "pgsteal": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_proactive": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_proactive": 0,
+          "pgfault": 41643,
+          "pgmajfault": 0,
+          "pgrefill": 0,
+          "pgactivate": 586,
+          "pgdeactivate": 0,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_fault_alloc": 0,
+          "thp_collapse_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0
+        }
+      },
+      "cgroup_after": {
+        "memory.current": 140587008,
+        "memory.peak": 242454528,
+        "memory.max": 1073741824,
+        "memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "memory.stat": {
+          "anon": 90656768,
+          "file": 43380736,
+          "kernel": 3031040,
+          "kernel_stack": 49152,
+          "pagetables": 425984,
+          "sec_pagetables": 0,
+          "percpu": 11440,
+          "sock": 0,
+          "vmalloc": 24576,
+          "shmem": 0,
+          "file_mapped": 65536,
+          "file_dirty": 65536,
+          "file_writeback": 0,
+          "swapcached": 0,
+          "anon_thp": 0,
+          "file_thp": 0,
+          "shmem_thp": 0,
+          "inactive_anon": 90570752,
+          "active_anon": 4096,
+          "inactive_file": 21536768,
+          "active_file": 21843968,
+          "unevictable": 0,
+          "slab_reclaimable": 2206152,
+          "slab_unreclaimable": 292760,
+          "slab": 2498912,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "workingset_nodereclaim": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_proactive": 0,
+          "pgscan": 0,
+          "pgsteal": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_proactive": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_proactive": 0,
+          "pgfault": 147536,
+          "pgmajfault": 0,
+          "pgrefill": 0,
+          "pgactivate": 5333,
+          "pgdeactivate": 0,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_fault_alloc": 0,
+          "thp_collapse_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0
+        }
+      },
+      "oom_kill_delta": 0,
+      "container_oom_killed": false,
+      "restart_count": 0,
+      "passed": true
+    },
+    {
+      "requests": [
+        {
+          "label": "8388608-bytes-concurrent-0",
+          "source_bytes": 8388608,
+          "http_request_bytes": 8463040,
+          "add_http_status": 200,
+          "add_seconds": 32.69627799000045,
+          "ack_valid": true,
+          "search_http_status": 200,
+          "search_seconds": 0.2596246520006389,
+          "exact_tail_immediately_retrieved": true,
+          "total_seconds": 33.03131136199954,
+          "passed": true
+        },
+        {
+          "label": "8388608-bytes-concurrent-1",
+          "source_bytes": 8388608,
+          "http_request_bytes": 8463040,
+          "add_http_status": 200,
+          "add_seconds": 30.297903539998515,
+          "ack_valid": true,
+          "search_http_status": 200,
+          "search_seconds": 0.4211633239992807,
+          "exact_tail_immediately_retrieved": true,
+          "total_seconds": 30.758247137999206,
+          "passed": true
+        }
+      ],
+      "concurrency": 2,
+      "wall_seconds": 33.547699417998956,
+      "docker_stats": {
+        "sample_count": 65,
+        "sample_parse_errors": 66,
+        "sampled_peak_docker_memory_bytes": 501219328,
+        "sampled_peak_cpu_percent": 115.38,
+        "sampled_peak_pids": 6,
+        "samples": [
+          {
+            "monotonic": 12515.116220651,
+            "docker_memory_usage_bytes": 111044198,
+            "cpu_percent": 0.15,
+            "pids": 2
+          },
+          {
+            "monotonic": 12515.604772609,
+            "docker_memory_usage_bytes": 111044198,
+            "cpu_percent": 0.15,
+            "pids": 2
+          },
+          {
+            "monotonic": 12516.116584562,
+            "docker_memory_usage_bytes": 197342003,
+            "cpu_percent": 94.47,
+            "pids": 3
+          },
+          {
+            "monotonic": 12516.604583024,
+            "docker_memory_usage_bytes": 197342003,
+            "cpu_percent": 94.47,
+            "pids": 3
+          },
+          {
+            "monotonic": 12517.115581085,
+            "docker_memory_usage_bytes": 197342003,
+            "cpu_percent": 97.55,
+            "pids": 3
+          },
+          {
+            "monotonic": 12517.604291047,
+            "docker_memory_usage_bytes": 197342003,
+            "cpu_percent": 97.55,
+            "pids": 3
+          },
+          {
+            "monotonic": 12518.115625794,
+            "docker_memory_usage_bytes": 202794598,
+            "cpu_percent": 97.35,
+            "pids": 3
+          },
+          {
+            "monotonic": 12518.604297744,
+            "docker_memory_usage_bytes": 202794598,
+            "cpu_percent": 97.35,
+            "pids": 3
+          },
+          {
+            "monotonic": 12519.106529725,
+            "docker_memory_usage_bytes": 216111513,
+            "cpu_percent": 97.18,
+            "pids": 3
+          },
+          {
+            "monotonic": 12519.604288321,
+            "docker_memory_usage_bytes": 216111513,
+            "cpu_percent": 97.18,
+            "pids": 3
+          },
+          {
+            "monotonic": 12520.114917922,
+            "docker_memory_usage_bytes": 246310502,
+            "cpu_percent": 96.66,
+            "pids": 3
+          },
+          {
+            "monotonic": 12520.604697422,
+            "docker_memory_usage_bytes": 246310502,
+            "cpu_percent": 96.66,
+            "pids": 3
+          },
+          {
+            "monotonic": 12521.115417244,
+            "docker_memory_usage_bytes": 245995929,
+            "cpu_percent": 97.73,
+            "pids": 3
+          },
+          {
+            "monotonic": 12521.607242143,
+            "docker_memory_usage_bytes": 245995929,
+            "cpu_percent": 97.73,
+            "pids": 3
+          },
+          {
+            "monotonic": 12522.107679569,
+            "docker_memory_usage_bytes": 281437798,
+            "cpu_percent": 97.72,
+            "pids": 3
+          },
+          {
+            "monotonic": 12522.607409255,
+            "docker_memory_usage_bytes": 281437798,
+            "cpu_percent": 97.72,
+            "pids": 3
+          },
+          {
+            "monotonic": 12523.114497179,
+            "docker_memory_usage_bytes": 301360742,
+            "cpu_percent": 97.7,
+            "pids": 3
+          },
+          {
+            "monotonic": 12523.606769789,
+            "docker_memory_usage_bytes": 301360742,
+            "cpu_percent": 97.7,
+            "pids": 3
+          },
+          {
+            "monotonic": 12524.114649882,
+            "docker_memory_usage_bytes": 319920537,
+            "cpu_percent": 97.66,
+            "pids": 3
+          },
+          {
+            "monotonic": 12524.606747458,
+            "docker_memory_usage_bytes": 319920537,
+            "cpu_percent": 97.66,
+            "pids": 3
+          },
+          {
+            "monotonic": 12525.114146496,
+            "docker_memory_usage_bytes": 338270617,
+            "cpu_percent": 97.01,
+            "pids": 3
+          },
+          {
+            "monotonic": 12525.606087492,
+            "docker_memory_usage_bytes": 338270617,
+            "cpu_percent": 97.01,
+            "pids": 3
+          },
+          {
+            "monotonic": 12526.113771489,
+            "docker_memory_usage_bytes": 369623040,
+            "cpu_percent": 97.66,
+            "pids": 3
+          },
+          {
+            "monotonic": 12526.606629702,
+            "docker_memory_usage_bytes": 369623040,
+            "cpu_percent": 97.66,
+            "pids": 3
+          },
+          {
+            "monotonic": 12527.113487602,
+            "docker_memory_usage_bytes": 448685670,
+            "cpu_percent": 97.7,
+            "pids": 3
+          },
+          {
+            "monotonic": 12527.605728101,
+            "docker_memory_usage_bytes": 448685670,
+            "cpu_percent": 97.7,
+            "pids": 3
+          },
+          {
+            "monotonic": 12528.113649461,
+            "docker_memory_usage_bytes": 501219328,
+            "cpu_percent": 115.38,
+            "pids": 6
+          },
+          {
+            "monotonic": 12528.606311933,
+            "docker_memory_usage_bytes": 501219328,
+            "cpu_percent": 115.38,
+            "pids": 6
+          },
+          {
+            "monotonic": 12529.10649588,
+            "docker_memory_usage_bytes": 489475276,
+            "cpu_percent": 98.53,
+            "pids": 4
+          },
+          {
+            "monotonic": 12529.606944535,
+            "docker_memory_usage_bytes": 489475276,
+            "cpu_percent": 98.53,
+            "pids": 4
+          },
+          {
+            "monotonic": 12530.113873829,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.45,
+            "pids": 4
+          },
+          {
+            "monotonic": 12530.61626508,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.45,
+            "pids": 4
+          },
+          {
+            "monotonic": 12531.107019621,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.22,
+            "pids": 4
+          },
+          {
+            "monotonic": 12531.61848032,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.22,
+            "pids": 4
+          },
+          {
+            "monotonic": 12532.106675321,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.13,
+            "pids": 4
+          },
+          {
+            "monotonic": 12532.61723888,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.13,
+            "pids": 4
+          },
+          {
+            "monotonic": 12533.105568804,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.25,
+            "pids": 4
+          },
+          {
+            "monotonic": 12533.60434499,
+            "docker_memory_usage_bytes": 489265561,
+            "cpu_percent": 97.25,
+            "pids": 4
+          },
+          {
+            "monotonic": 12534.105963595,
+            "docker_memory_usage_bytes": 474690355,
+            "cpu_percent": 97.02,
+            "pids": 4
+          },
+          {
+            "monotonic": 12534.604739822,
+            "docker_memory_usage_bytes": 474690355,
+            "cpu_percent": 97.02,
+            "pids": 4
+          },
+          {
+            "monotonic": 12535.104662079,
+            "docker_memory_usage_bytes": 393740288,
+            "cpu_percent": 96.94,
+            "pids": 4
+          },
+          {
+            "monotonic": 12535.604444294,
+            "docker_memory_usage_bytes": 393740288,
+            "cpu_percent": 96.94,
+            "pids": 4
+          },
+          {
+            "monotonic": 12536.10577001,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 96.64,
+            "pids": 4
+          },
+          {
+            "monotonic": 12536.617280519,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 96.64,
+            "pids": 4
+          },
+          {
+            "monotonic": 12537.105270357,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 96.92,
+            "pids": 4
+          },
+          {
+            "monotonic": 12537.604999566,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 96.92,
+            "pids": 4
+          },
+          {
+            "monotonic": 12538.104970576,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.01,
+            "pids": 4
+          },
+          {
+            "monotonic": 12538.604755235,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.01,
+            "pids": 4
+          },
+          {
+            "monotonic": 12539.104831454,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.45,
+            "pids": 4
+          },
+          {
+            "monotonic": 12539.604550202,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.45,
+            "pids": 4
+          },
+          {
+            "monotonic": 12540.112305799,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 96.83,
+            "pids": 4
+          },
+          {
+            "monotonic": 12540.605091434,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 96.83,
+            "pids": 4
+          },
+          {
+            "monotonic": 12541.107662114,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.47,
+            "pids": 4
+          },
+          {
+            "monotonic": 12541.604493103,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.47,
+            "pids": 4
+          },
+          {
+            "monotonic": 12542.105370446,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.33,
+            "pids": 4
+          },
+          {
+            "monotonic": 12542.60427884,
+            "docker_memory_usage_bytes": 361234432,
+            "cpu_percent": 97.33,
+            "pids": 4
+          },
+          {
+            "monotonic": 12543.112774609,
+            "docker_memory_usage_bytes": 396361728,
+            "cpu_percent": 99.67,
+            "pids": 4
+          },
+          {
+            "monotonic": 12543.604351374,
+            "docker_memory_usage_bytes": 396361728,
+            "cpu_percent": 99.67,
+            "pids": 4
+          },
+          {
+            "monotonic": 12544.107515079,
+            "docker_memory_usage_bytes": 396466585,
+            "cpu_percent": 23.96,
+            "pids": 4
+          },
+          {
+            "monotonic": 12544.604683482,
+            "docker_memory_usage_bytes": 396466585,
+            "cpu_percent": 23.96,
+            "pids": 4
+          },
+          {
+            "monotonic": 12545.108379867,
+            "docker_memory_usage_bytes": 397095731,
+            "cpu_percent": 2.49,
+            "pids": 4
+          },
+          {
+            "monotonic": 12545.617346425,
+            "docker_memory_usage_bytes": 397095731,
+            "cpu_percent": 2.49,
+            "pids": 4
+          },
+          {
+            "monotonic": 12546.111924892,
+            "docker_memory_usage_bytes": 382939955,
+            "cpu_percent": 51.35,
+            "pids": 3
+          },
+          {
+            "monotonic": 12546.613302604,
+            "docker_memory_usage_bytes": 382939955,
+            "cpu_percent": 51.35,
+            "pids": 3
+          },
+          {
+            "monotonic": 12547.106447668,
+            "docker_memory_usage_bytes": 364904448,
+            "cpu_percent": 12.72,
+            "pids": 3
+          }
+        ]
+      },
+      "cgroup_before": {
+        "memory.current": 140984320,
+        "memory.peak": 242454528,
+        "memory.max": 1073741824,
+        "memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "memory.stat": {
+          "anon": 90656768,
+          "file": 43380736,
+          "kernel": 3018752,
+          "kernel_stack": 49152,
+          "pagetables": 417792,
+          "sec_pagetables": 0,
+          "percpu": 10608,
+          "sock": 0,
+          "vmalloc": 24576,
+          "shmem": 0,
+          "file_mapped": 65536,
+          "file_dirty": 65536,
+          "file_writeback": 0,
+          "swapcached": 0,
+          "anon_thp": 0,
+          "file_thp": 0,
+          "shmem_thp": 0,
+          "inactive_anon": 90562560,
+          "active_anon": 12288,
+          "inactive_file": 21536768,
+          "active_file": 21843968,
+          "unevictable": 0,
+          "slab_reclaimable": 2203432,
+          "slab_unreclaimable": 293024,
+          "slab": 2496456,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "workingset_nodereclaim": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_proactive": 0,
+          "pgscan": 0,
+          "pgsteal": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_proactive": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_proactive": 0,
+          "pgfault": 151540,
+          "pgmajfault": 0,
+          "pgrefill": 0,
+          "pgactivate": 5334,
+          "pgdeactivate": 0,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_fault_alloc": 0,
+          "thp_collapse_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0
+        }
+      },
+      "cgroup_after": {
+        "memory.current": 260300800,
+        "memory.peak": 524816384,
+        "memory.max": 1073741824,
+        "memory.events": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        },
+        "memory.stat": {
+          "anon": 170590208,
+          "file": 81547264,
+          "kernel": 4608000,
+          "kernel_stack": 65536,
+          "pagetables": 831488,
+          "sec_pagetables": 0,
+          "percpu": 10608,
+          "sock": 0,
+          "vmalloc": 24576,
+          "shmem": 0,
+          "file_mapped": 65536,
+          "file_dirty": 65536,
+          "file_writeback": 0,
+          "swapcached": 0,
+          "anon_thp": 0,
+          "file_thp": 0,
+          "shmem_thp": 0,
+          "inactive_anon": 170553344,
+          "active_anon": 8192,
+          "inactive_file": 59617280,
+          "active_file": 21929984,
+          "unevictable": 0,
+          "slab_reclaimable": 3334440,
+          "slab_unreclaimable": 354544,
+          "slab": 3688984,
+          "workingset_refault_anon": 0,
+          "workingset_refault_file": 0,
+          "workingset_activate_anon": 0,
+          "workingset_activate_file": 0,
+          "workingset_restore_anon": 0,
+          "workingset_restore_file": 0,
+          "workingset_nodereclaim": 0,
+          "pgdemote_kswapd": 0,
+          "pgdemote_direct": 0,
+          "pgdemote_khugepaged": 0,
+          "pgdemote_proactive": 0,
+          "pgscan": 0,
+          "pgsteal": 0,
+          "pswpin": 0,
+          "pswpout": 0,
+          "pgscan_kswapd": 0,
+          "pgscan_direct": 0,
+          "pgscan_khugepaged": 0,
+          "pgscan_proactive": 0,
+          "pgsteal_kswapd": 0,
+          "pgsteal_direct": 0,
+          "pgsteal_khugepaged": 0,
+          "pgsteal_proactive": 0,
+          "pgfault": 299230,
+          "pgmajfault": 0,
+          "pgrefill": 0,
+          "pgactivate": 5354,
+          "pgdeactivate": 0,
+          "pglazyfree": 0,
+          "pglazyfreed": 0,
+          "swpin_zero": 0,
+          "swpout_zero": 0,
+          "thp_fault_alloc": 0,
+          "thp_collapse_alloc": 0,
+          "thp_swpout": 0,
+          "thp_swpout_fallback": 0
+        }
+      },
+      "oom_kill_delta": 0,
+      "container_oom_killed": false,
+      "restart_count": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Small local engineering-log diagnostic, not a cloud SLA or CAMBench result.",
+    "Docker stats is sampled; cgroup memory.peak is cumulative for this service lifetime and includes file cache.",
+    "No 64MiB request tested or claimed safe. No natural multi-language code corpus tested here."
+  ],
+  "container": "forgetrace-local-verification-b427446f7411",
+  "volume": "forgetrace-local-verification-b427446f7411",
+  "image_id": "sha256:a6299b766727b71e887e48a40c2819e5367d2d02e9b53b9330f2288edf61f787",
+  "source_sha256": "0f5c9ddd3cfd08186970d557535c5013cfad20d57120ca5074085d4ff2153061",
+  "memory_limit_bytes": 1073741824,
+  "cpu_limit": 1.5,
+  "concurrency_decision": "single_8MiB_cgroup_peak_below_half_memory_limit",
+  "model_http_attempts": 0,
+  "final_cgroup": {
+    "memory.current": 259842048,
+    "memory.peak": 524816384,
+    "memory.max": 1073741824,
+    "memory.events": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "memory.stat": {
+      "anon": 170586112,
+      "file": 81547264,
+      "kernel": 4444160,
+      "kernel_stack": 65536,
+      "pagetables": 659456,
+      "sec_pagetables": 0,
+      "percpu": 11024,
+      "sock": 0,
+      "vmalloc": 24576,
+      "shmem": 0,
+      "file_mapped": 65536,
+      "file_dirty": 65536,
+      "file_writeback": 0,
+      "swapcached": 0,
+      "anon_thp": 0,
+      "file_thp": 0,
+      "shmem_thp": 0,
+      "inactive_anon": 170536960,
+      "active_anon": 8192,
+      "inactive_file": 59617280,
+      "active_file": 21929984,
+      "unevictable": 0,
+      "slab_reclaimable": 3340104,
+      "slab_unreclaimable": 347640,
+      "slab": 3687744,
+      "workingset_refault_anon": 0,
+      "workingset_refault_file": 0,
+      "workingset_activate_anon": 0,
+      "workingset_activate_file": 0,
+      "workingset_restore_anon": 0,
+      "workingset_restore_file": 0,
+      "workingset_nodereclaim": 0,
+      "pgdemote_kswapd": 0,
+      "pgdemote_direct": 0,
+      "pgdemote_khugepaged": 0,
+      "pgdemote_proactive": 0,
+      "pgscan": 0,
+      "pgsteal": 0,
+      "pswpin": 0,
+      "pswpout": 0,
+      "pgscan_kswapd": 0,
+      "pgscan_direct": 0,
+      "pgscan_khugepaged": 0,
+      "pgscan_proactive": 0,
+      "pgsteal_kswapd": 0,
+      "pgsteal_direct": 0,
+      "pgsteal_khugepaged": 0,
+      "pgsteal_proactive": 0,
+      "pgfault": 303323,
+      "pgmajfault": 0,
+      "pgrefill": 0,
+      "pgactivate": 5354,
+      "pgdeactivate": 0,
+      "pglazyfree": 0,
+      "pglazyfreed": 0,
+      "swpin_zero": 0,
+      "swpout_zero": 0,
+      "thp_fault_alloc": 0,
+      "thp_collapse_alloc": 0,
+      "thp_swpout": 0,
+      "thp_swpout_fallback": 0
+    }
+  },
+  "retained_container_state": "stopped"
+}

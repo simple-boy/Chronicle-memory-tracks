@@ -1,0 +1,24 @@
+flowchart LR
+    H["Historical Engineering Messages<br/>Code · Logs · Timestamp · Session"] --> P["Source-Preserving Ingestion"]
+    P --> R["Rule Parsing<br/>Paths · Symbols · Errors · Versions<br/>Actions · Reported Outcomes"]
+    P --> L["gpt-4o-mini<br/>Exact Source-Quote Selection"]
+    P --> S[("SQLite WAL / FULL<br/>Lossless Sources · Scoped BM25<br/>Artifacts · Outcome Links")]
+    R --> S
+    L --> S
+    Q["Current Coding Task"] --> U["Task Clues<br/>Paths · Symbols · Constraints"]
+    U --> C["Lexical + Artifact Retrieval"]
+    S --> C
+    S -. "optional v4 embeddings" .-> V["Optional Dense Retrieval / RRF"]
+    U -.-> V
+    C --> A["Applicability + Reported Reliability"]
+    V -.-> A
+    A --> X["Counterevidence Closure<br/>Keep Action + Linked Reports Together<br/>Whole Packet Fits, or Skip"]
+    S --> X
+    X --> E["Ranked Source Evidence<br/>Stable IDs · Exact Spans · top_k ≤ 100"]
+    E --> O["Official Coding Agent<br/>Answer / Execution / Eval"]
+    classDef core fill:#fff0df,stroke:#b96a29,stroke-width:2px
+    classDef store fill:#e9eff9,stroke:#44688b
+    classDef write fill:#edf5ee,stroke:#568260
+    class X core
+    class S store
+    class P,R,L write

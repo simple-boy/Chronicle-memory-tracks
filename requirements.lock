@@ -1,0 +1,15 @@
+# Actual runtime environment exported from the tested offline Docker image.
+# No credentials, editable paths, direct URLs, pip, or setuptools.
+annotated-types==0.8.0
+anyio==4.15.1
+click==8.5.0
+fastapi==0.119.0
+h11==0.16.0
+idna==3.20
+pydantic==2.14.1
+pydantic_core==2.50.1
+starlette==0.48.0
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+uvicorn==0.37.0
+wheel==0.44.0

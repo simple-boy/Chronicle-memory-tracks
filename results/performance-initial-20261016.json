@@ -1,0 +1,1305 @@
+{
+  "kind": "offline_engine_diagnostic_not_production_model_or_cambench_score",
+  "date": "2026-10-16",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.11.0 (main, Mar  1 2023, 18:26:19) [GCC 11.2.0]",
+  "real_model_calls": 0,
+  "ram_limit_applied": false,
+  "cpu_affinity": [
+    0,
+    1
+  ],
+  "database_directory": "/root/.cache/forgetrace-bench",
+  "performance": [
+    {
+      "profile": "small_text",
+      "strategy": "raw",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 256,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 0.9204813380001724,
+      "requests_per_second": 13.03665756664993,
+      "messages_per_second": 13.03665756664993,
+      "wire_bytes_per_second": 5349.375154848688,
+      "add_p50_ms": 76.95250599954306,
+      "add_p95_ms": 82.81582349909513,
+      "add_p99_ms": 84.64057829934973,
+      "search_p50_ms": 3.3869814997160574,
+      "search_p95_ms": 4.0681785999368,
+      "search_p99_ms": 4.209216520121117,
+      "resources": {
+        "rss_peak_sampled_bytes": 48119808,
+        "cpu_seconds": 0.049999999999999975,
+        "os_write_bytes": 835584
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.039,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 889.915,
+          "search": 20.115
+        },
+        "received_bytes": 5824,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 12,
+          "source_bytes": 3398,
+          "add_seconds": 0.8814520989999437,
+          "parse_seconds": 0.00948053499814705,
+          "commit_seconds": 0.8655886510005075,
+          "write_lock_wait_seconds": 1.5091996829141863e-05,
+          "search_requests": 10,
+          "search_seconds": 0.015659482995033613,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 947608,
+          "disk_free_bytes": 942862536704,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "code_8k",
+      "strategy": "raw",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 1.1599314939994656,
+      "requests_per_second": 10.34543855570623,
+      "messages_per_second": 10.34543855570623,
+      "wire_bytes_per_second": 87308.60445112344,
+      "add_p50_ms": 94.1430010007025,
+      "add_p95_ms": 111.2385559996255,
+      "add_p99_ms": 124.23851440009459,
+      "search_p50_ms": 5.870149499969557,
+      "search_p95_ms": 15.027558650854175,
+      "search_p99_ms": 19.667081331444933,
+      "resources": {
+        "rss_peak_sampled_bytes": 48275456,
+        "cpu_seconds": 0.18000000000000005,
+        "os_write_bytes": 987136
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.33,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 1128.815,
+          "search": 55.834
+        },
+        "received_bytes": 102172,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 36,
+          "source_bytes": 98630,
+          "add_seconds": 1.1198742789983953,
+          "parse_seconds": 0.149598755997431,
+          "commit_seconds": 0.9628235870004573,
+          "write_lock_wait_seconds": 1.990800410567317e-05,
+          "search_requests": 10,
+          "search_seconds": 0.04649788499773422,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 1100048,
+          "disk_free_bytes": 942862385152,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "log_256k",
+      "strategy": "raw",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 262144,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 5.7319239280004695,
+      "requests_per_second": 2.093537902933421,
+      "messages_per_second": 2.093537902933421,
+      "wire_bytes_per_second": 555569.4806841022,
+      "add_p50_ms": 468.44581449931866,
+      "add_p95_ms": 505.5181358502523,
+      "add_p99_ms": 516.6365719711393,
+      "search_p50_ms": 39.725903500766435,
+      "search_p95_ms": 46.9817583501026,
+      "search_p99_ms": 49.485665270058234,
+      "resources": {
+        "rss_peak_sampled_bytes": 55083008,
+        "cpu_seconds": 4.6,
+        "os_write_bytes": 3969024
+      },
+      "storage_metrics": {
+        "uptime_seconds": 6.248,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 5675.578,
+          "search": 384.439
+        },
+        "received_bytes": 3185382,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 780,
+          "source_bytes": 3146054,
+          "add_seconds": 5.655969325001934,
+          "parse_seconds": 4.562333407000551,
+          "commit_seconds": 1.0613631470023392,
+          "write_lock_wait_seconds": 3.4034999771392904e-05,
+          "search_requests": 10,
+          "search_seconds": 0.3552465270022367,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 4082928,
+          "disk_free_bytes": 942859403264,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "batch_100",
+      "strategy": "raw",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 204800,
+      "batch_messages": 100,
+      "concurrency": 1,
+      "seconds": 5.558226667999406,
+      "requests_per_second": 2.158961970566631,
+      "messages_per_second": 215.89619705666314,
+      "wire_bytes_per_second": 461275.1787833842,
+      "add_p50_ms": 429.63517350017355,
+      "add_p95_ms": 583.3844987500015,
+      "add_p99_ms": 610.5051021498912,
+      "search_p50_ms": 45.42636199948902,
+      "search_p95_ms": 60.54038920019593,
+      "search_p99_ms": 61.00525144060157,
+      "resources": {
+        "rss_peak_sampled_bytes": 50778112,
+        "cpu_seconds": 3.9099999999999997,
+        "os_write_bytes": 16490496
+      },
+      "storage_metrics": {
+        "uptime_seconds": 6.144,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 5510.703,
+          "search": 457.814
+        },
+        "received_bytes": 2564772,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 1200,
+          "chunks": 1200,
+          "source_bytes": 2492490,
+          "add_seconds": 5.48720485800186,
+          "parse_seconds": 3.7110684540020884,
+          "commit_seconds": 1.7451476840033138,
+          "write_lock_wait_seconds": 2.62079993262887e-05,
+          "search_requests": 10,
+          "search_seconds": 0.425503309994383,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 10631576,
+          "disk_free_bytes": 942852849664,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "concurrent_code",
+      "strategy": "raw",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 2,
+      "seconds": 1.4231242160003603,
+      "requests_per_second": 8.432152207855454,
+      "messages_per_second": 8.432152207855454,
+      "wire_bytes_per_second": 71161.7431994948,
+      "add_p50_ms": 235.20867949991953,
+      "add_p95_ms": 262.0430439001211,
+      "add_p99_ms": 262.071477579957,
+      "search_p50_ms": 5.4790089998277836,
+      "search_p95_ms": 15.779162999933746,
+      "search_p99_ms": 20.85322620023362,
+      "resources": {
+        "rss_peak_sampled_bytes": 48967680,
+        "cpu_seconds": 0.21000000000000008,
+        "os_write_bytes": 987136
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.534,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 2696.499,
+          "search": 56.081
+        },
+        "received_bytes": 102172,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 36,
+          "source_bytes": 98630,
+          "add_seconds": 2.6773004100014077,
+          "parse_seconds": 0.15726120000181254,
+          "commit_seconds": 1.401589346001856,
+          "write_lock_wait_seconds": 1.1055411569977878,
+          "search_requests": 10,
+          "search_seconds": 0.04686493900226196,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 1100048,
+          "disk_free_bytes": 942862385152,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "sustained",
+      "strategy": "raw",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 224,
+      "successes": 224,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 2,
+      "seconds": 20.112931246998414,
+      "requests_per_second": 11.137113593695052,
+      "messages_per_second": 11.137113593695052,
+      "wire_bytes_per_second": 94004.69661935345,
+      "add_p50_ms": 153.05687299951387,
+      "add_p95_ms": 211.7564365008547,
+      "add_p99_ms": 283.58281965049196,
+      "search_p50_ms": 41.936162499951024,
+      "search_p95_ms": 54.11645054982727,
+      "search_p99_ms": 57.36451490984109,
+      "resources": {
+        "rss_peak_sampled_bytes": 49496064,
+        "cpu_seconds": 3.6599999999999997,
+        "os_write_bytes": 26275840
+      },
+      "storage_metrics": {
+        "uptime_seconds": 20.66,
+        "completed": {
+          "add_200": 224,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 31184.757,
+          "search": 397.126
+        },
+        "received_bytes": 1891610,
+        "storage": {
+          "add_requests": 224,
+          "deduplicated_requests": 0,
+          "messages": 224,
+          "chunks": 672,
+          "source_bytes": 1841092,
+          "add_seconds": 30.468446653016144,
+          "parse_seconds": 3.296763843984081,
+          "commit_seconds": 17.872786596979495,
+          "write_lock_wait_seconds": 8.255635106999762,
+          "search_requests": 10,
+          "search_seconds": 0.3363665859997127,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 6348616,
+          "disk_free_bytes": 942857138176,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "small_text",
+      "strategy": "structured",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 256,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 0.8299221479992411,
+      "requests_per_second": 14.459187562266349,
+      "messages_per_second": 14.459187562266349,
+      "wire_bytes_per_second": 5933.086629716626,
+      "add_p50_ms": 67.27171700094914,
+      "add_p95_ms": 75.97453280095579,
+      "add_p99_ms": 76.23419616093088,
+      "search_p50_ms": 3.325655500702851,
+      "search_p95_ms": 3.9295293497161756,
+      "search_p99_ms": 4.25812186944313,
+      "resources": {
+        "rss_peak_sampled_bytes": 48001024,
+        "cpu_seconds": 0.04000000000000001,
+        "os_write_bytes": 835584
+      },
+      "storage_metrics": {
+        "uptime_seconds": 0.937,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 800.327,
+          "search": 19.503
+        },
+        "received_bytes": 5824,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 12,
+          "source_bytes": 3398,
+          "add_seconds": 0.7923841970023204,
+          "parse_seconds": 0.009331245002613286,
+          "commit_seconds": 0.776919319998342,
+          "write_lock_wait_seconds": 1.4757999451830983e-05,
+          "search_requests": 10,
+          "search_seconds": 0.01505933899898082,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 947608,
+          "disk_free_bytes": 942862536704,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "code_8k",
+      "strategy": "structured",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 1.3621079639997333,
+      "requests_per_second": 8.80987433974239,
+      "messages_per_second": 8.80987433974239,
+      "wire_bytes_per_second": 74349.46617786594,
+      "add_p50_ms": 92.70995749920985,
+      "add_p95_ms": 209.77046024945588,
+      "add_p99_ms": 239.56630324977598,
+      "search_p50_ms": 5.4410310003731865,
+      "search_p95_ms": 15.858476249286454,
+      "search_p99_ms": 20.609228849007195,
+      "resources": {
+        "rss_peak_sampled_bytes": 48390144,
+        "cpu_seconds": 0.19000000000000006,
+        "os_write_bytes": 987136
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.533,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 1331.566,
+          "search": 55.587
+        },
+        "received_bytes": 102172,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 36,
+          "source_bytes": 98630,
+          "add_seconds": 1.322525580002548,
+          "parse_seconds": 0.14997048300028837,
+          "commit_seconds": 1.1652632759978587,
+          "write_lock_wait_seconds": 2.0547997337416746e-05,
+          "search_requests": 10,
+          "search_seconds": 0.046488822999890544,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 1100048,
+          "disk_free_bytes": 942862385152,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "log_256k",
+      "strategy": "structured",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 262144,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 5.672282208999604,
+      "requests_per_second": 2.1155505946020954,
+      "messages_per_second": 2.1155505946020954,
+      "wire_bytes_per_second": 561411.0657166392,
+      "add_p50_ms": 468.93038950111077,
+      "add_p95_ms": 493.4641004000696,
+      "add_p99_ms": 494.4804264799859,
+      "search_p50_ms": 39.87973350103857,
+      "search_p95_ms": 47.396188899256224,
+      "search_p99_ms": 50.062124979558575,
+      "resources": {
+        "rss_peak_sampled_bytes": 55148544,
+        "cpu_seconds": 4.599999999999999,
+        "os_write_bytes": 3969024
+      },
+      "storage_metrics": {
+        "uptime_seconds": 6.153,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 5614.782,
+          "search": 389.176
+        },
+        "received_bytes": 3185382,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 780,
+          "source_bytes": 3146054,
+          "add_seconds": 5.5939781999986735,
+          "parse_seconds": 4.564117947005798,
+          "commit_seconds": 0.9965858169998683,
+          "write_lock_wait_seconds": 3.807399843935855e-05,
+          "search_requests": 10,
+          "search_seconds": 0.3587603260020842,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 4082928,
+          "disk_free_bytes": 942859403264,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "batch_100",
+      "strategy": "structured",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 204800,
+      "batch_messages": 100,
+      "concurrency": 1,
+      "seconds": 5.453519156999391,
+      "requests_per_second": 2.200414017909599,
+      "messages_per_second": 220.0414017909599,
+      "wire_bytes_per_second": 470131.6574104933,
+      "add_p50_ms": 421.9467259999874,
+      "add_p95_ms": 554.2329581995546,
+      "add_p99_ms": 557.6508852400548,
+      "search_p50_ms": 52.42451549929683,
+      "search_p95_ms": 66.89559844971882,
+      "search_p99_ms": 66.94103009040191,
+      "resources": {
+        "rss_peak_sampled_bytes": 50741248,
+        "cpu_seconds": 3.9300000000000006,
+        "os_write_bytes": 16490496
+      },
+      "storage_metrics": {
+        "uptime_seconds": 6.103,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 5404.988,
+          "search": 528.75
+        },
+        "received_bytes": 2564772,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 1200,
+          "chunks": 1200,
+          "source_bytes": 2492490,
+          "add_seconds": 5.381136220004919,
+          "parse_seconds": 3.818104886000583,
+          "commit_seconds": 1.5314043370017316,
+          "write_lock_wait_seconds": 3.1594998290529475e-05,
+          "search_requests": 10,
+          "search_seconds": 0.49015045600026497,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 10631576,
+          "disk_free_bytes": 942852853760,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "concurrent_code",
+      "strategy": "structured",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 2,
+      "seconds": 1.6219605820006109,
+      "requests_per_second": 7.3984535340548,
+      "messages_per_second": 7.3984535340548,
+      "wire_bytes_per_second": 62438.015525066476,
+      "add_p50_ms": 290.16028300065955,
+      "add_p95_ms": 315.34687359999225,
+      "add_p99_ms": 315.83591072012496,
+      "search_p50_ms": 5.540846999792848,
+      "search_p95_ms": 15.212790399618811,
+      "search_p99_ms": 20.085623679788114,
+      "resources": {
+        "rss_peak_sampled_bytes": 48939008,
+        "cpu_seconds": 0.20000000000000004,
+        "os_write_bytes": 987136
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.739,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 3115.8,
+          "search": 55.488
+        },
+        "received_bytes": 102172,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 36,
+          "source_bytes": 98630,
+          "add_seconds": 3.099601959997017,
+          "parse_seconds": 0.15533857500122394,
+          "commit_seconds": 1.600522329001251,
+          "write_lock_wait_seconds": 1.3275463380032306,
+          "search_requests": 10,
+          "search_seconds": 0.046485162996759755,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 1100048,
+          "disk_free_bytes": 942862385152,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "sustained",
+      "strategy": "structured",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 214,
+      "successes": 214,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 2,
+      "seconds": 20.088527059000626,
+      "requests_per_second": 10.65284674040438,
+      "messages_per_second": 10.65284674040438,
+      "wire_bytes_per_second": 89916.8960817708,
+      "add_p50_ms": 153.29309200024,
+      "add_p95_ms": 232.98381264976337,
+      "add_p99_ms": 293.67365036978316,
+      "search_p50_ms": 40.56625150042237,
+      "search_p95_ms": 52.05696545062891,
+      "search_p99_ms": 55.65127709045555,
+      "resources": {
+        "rss_peak_sampled_bytes": 49422336,
+        "cpu_seconds": 3.49,
+        "os_write_bytes": 24940544
+      },
+      "storage_metrics": {
+        "uptime_seconds": 20.579,
+        "completed": {
+          "add_200": 214,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 31006.797,
+          "search": 385.789
+        },
+        "received_bytes": 1807198,
+        "storage": {
+          "add_requests": 214,
+          "deduplicated_requests": 0,
+          "messages": 214,
+          "chunks": 642,
+          "source_bytes": 1758900,
+          "add_seconds": 30.381671826988168,
+          "parse_seconds": 3.0932763480159338,
+          "commit_seconds": 17.993618325994248,
+          "write_lock_wait_seconds": 8.208355871993263,
+          "search_requests": 10,
+          "search_seconds": 0.3276510880004935,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 6352664,
+          "disk_free_bytes": 942857134080,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "small_text",
+      "strategy": "proposed",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 256,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 0.8282186629985517,
+      "requests_per_second": 14.488927303997476,
+      "messages_per_second": 14.488927303997476,
+      "wire_bytes_per_second": 5945.289837073631,
+      "add_p50_ms": 68.20573850018263,
+      "add_p95_ms": 72.25962429965875,
+      "add_p99_ms": 75.75398725897685,
+      "search_p50_ms": 3.312274000563775,
+      "search_p95_ms": 4.125935649517486,
+      "search_p99_ms": 4.462839130083012,
+      "resources": {
+        "rss_peak_sampled_bytes": 48107520,
+        "cpu_seconds": 0.04999999999999997,
+        "os_write_bytes": 835584
+      },
+      "storage_metrics": {
+        "uptime_seconds": 0.941,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 798.637,
+          "search": 20.886
+        },
+        "received_bytes": 5824,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 12,
+          "source_bytes": 3398,
+          "add_seconds": 0.7901716139986092,
+          "parse_seconds": 0.009192248002364067,
+          "commit_seconds": 0.7749136999973416,
+          "write_lock_wait_seconds": 1.537799835205078e-05,
+          "search_requests": 10,
+          "search_seconds": 0.016341656999429688,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 947608,
+          "disk_free_bytes": 942862536704,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "code_8k",
+      "strategy": "proposed",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 0.9731783300012466,
+      "requests_per_second": 12.330730792150527,
+      "messages_per_second": 12.330730792150527,
+      "wire_bytes_per_second": 104063.1473985557,
+      "add_p50_ms": 77.0216105001964,
+      "add_p95_ms": 89.11716240072565,
+      "add_p99_ms": 92.76403728108562,
+      "search_p50_ms": 5.635890499434026,
+      "search_p95_ms": 15.248551950025998,
+      "search_p99_ms": 20.11497758936457,
+      "resources": {
+        "rss_peak_sampled_bytes": 48279552,
+        "cpu_seconds": 0.19000000000000003,
+        "os_write_bytes": 987136
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.178,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 944.337,
+          "search": 57.312
+        },
+        "received_bytes": 102172,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 36,
+          "source_bytes": 98630,
+          "add_seconds": 0.9359507139961352,
+          "parse_seconds": 0.15183657599664002,
+          "commit_seconds": 0.7773264780007594,
+          "write_lock_wait_seconds": 1.9298999177408405e-05,
+          "search_requests": 10,
+          "search_seconds": 0.04811135199815908,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 1100048,
+          "disk_free_bytes": 942862385152,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "log_256k",
+      "strategy": "proposed",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 262144,
+      "batch_messages": 1,
+      "concurrency": 1,
+      "seconds": 5.766928471000938,
+      "requests_per_second": 2.0808303866333926,
+      "messages_per_second": 2.0808303866333926,
+      "wire_bytes_per_second": 552197.2426072565,
+      "add_p50_ms": 480.92712750076316,
+      "add_p95_ms": 489.3511736000619,
+      "add_p99_ms": 492.48144271970887,
+      "search_p50_ms": 39.60769999957847,
+      "search_p95_ms": 44.81351514959897,
+      "search_p99_ms": 45.928627029297786,
+      "resources": {
+        "rss_peak_sampled_bytes": 55554048,
+        "cpu_seconds": 4.6000000000000005,
+        "os_write_bytes": 3969024
+      },
+      "storage_metrics": {
+        "uptime_seconds": 6.308,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 5710.366,
+          "search": 383.293
+        },
+        "received_bytes": 3185382,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 780,
+          "source_bytes": 3146054,
+          "add_seconds": 5.688582095999664,
+          "parse_seconds": 4.544518482995045,
+          "commit_seconds": 1.112230239001292,
+          "write_lock_wait_seconds": 4.0697002987144515e-05,
+          "search_requests": 10,
+          "search_seconds": 0.3550968509971426,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 4082928,
+          "disk_free_bytes": 942859403264,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "batch_100",
+      "strategy": "proposed",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 204800,
+      "batch_messages": 100,
+      "concurrency": 1,
+      "seconds": 5.324618616001317,
+      "requests_per_second": 2.253682538677627,
+      "messages_per_second": 225.3682538677627,
+      "wire_bytes_per_second": 481512.7964837071,
+      "add_p50_ms": 421.52160100067704,
+      "add_p95_ms": 523.3692602996598,
+      "add_p99_ms": 527.7692224597558,
+      "search_p50_ms": 55.526723499497166,
+      "search_p95_ms": 69.91241219957374,
+      "search_p99_ms": 70.82254404000196,
+      "resources": {
+        "rss_peak_sampled_bytes": 50847744,
+        "cpu_seconds": 3.8800000000000003,
+        "os_write_bytes": 16490496
+      },
+      "storage_metrics": {
+        "uptime_seconds": 6.027,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 5275.231,
+          "search": 555.597
+        },
+        "received_bytes": 2564772,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 1200,
+          "chunks": 1200,
+          "source_bytes": 2492490,
+          "add_seconds": 5.251583086001119,
+          "parse_seconds": 3.730593943004351,
+          "commit_seconds": 1.4893453669992596,
+          "write_lock_wait_seconds": 2.8646998543990776e-05,
+          "search_requests": 10,
+          "search_seconds": 0.5124142200002098,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 10631576,
+          "disk_free_bytes": 942852853760,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "concurrent_code",
+      "strategy": "proposed",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 12,
+      "successes": 12,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 2,
+      "seconds": 1.7176412280005025,
+      "requests_per_second": 6.9863250860420605,
+      "messages_per_second": 6.9863250860420605,
+      "wire_bytes_per_second": 58959.926176137626,
+      "add_p50_ms": 302.7592509997703,
+      "add_p95_ms": 307.0425857496957,
+      "add_p99_ms": 307.1039811501032,
+      "search_p50_ms": 5.850454999745125,
+      "search_p95_ms": 15.835832350330733,
+      "search_p99_ms": 20.585232070279744,
+      "resources": {
+        "rss_peak_sampled_bytes": 48947200,
+        "cpu_seconds": 0.20000000000000007,
+        "os_write_bytes": 987136
+      },
+      "storage_metrics": {
+        "uptime_seconds": 1.873,
+        "completed": {
+          "add_200": 12,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 3305.847,
+          "search": 58.294
+        },
+        "received_bytes": 102172,
+        "storage": {
+          "add_requests": 12,
+          "deduplicated_requests": 0,
+          "messages": 12,
+          "chunks": 36,
+          "source_bytes": 98630,
+          "add_seconds": 3.286068808998607,
+          "parse_seconds": 0.15459004899821593,
+          "commit_seconds": 1.696043103998818,
+          "write_lock_wait_seconds": 1.4217946039971139,
+          "search_requests": 10,
+          "search_seconds": 0.048137908002900076,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 1100048,
+          "disk_free_bytes": 942862385152,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    },
+    {
+      "profile": "sustained",
+      "strategy": "proposed",
+      "model_mode": "offline",
+      "real_model_calls": 0,
+      "requests": 212,
+      "successes": 212,
+      "errors": 0,
+      "error_rate": 0.0,
+      "request_payload_text_bytes": 8192,
+      "batch_messages": 1,
+      "concurrency": 2,
+      "seconds": 20.000958172999162,
+      "requests_per_second": 10.59949219263881,
+      "messages_per_second": 10.59949219263881,
+      "wire_bytes_per_second": 89466.51378010833,
+      "add_p50_ms": 153.53587650042755,
+      "add_p95_ms": 229.76637644969742,
+      "add_p99_ms": 295.27615691997164,
+      "search_p50_ms": 40.608478499962075,
+      "search_p95_ms": 52.76801185063958,
+      "search_p99_ms": 56.615787970877136,
+      "resources": {
+        "rss_peak_sampled_bytes": 49479680,
+        "cpu_seconds": 3.47,
+        "os_write_bytes": 24793088
+      },
+      "storage_metrics": {
+        "uptime_seconds": 20.55,
+        "completed": {
+          "add_200": 212,
+          "search_200": 10
+        },
+        "active": {
+          "add": 0,
+          "search": 0
+        },
+        "duration_ms_sum": {
+          "add": 30908.363,
+          "search": 388.043
+        },
+        "received_bytes": 1790316,
+        "storage": {
+          "add_requests": 212,
+          "deduplicated_requests": 0,
+          "messages": 212,
+          "chunks": 636,
+          "source_bytes": 1742462,
+          "add_seconds": 30.315616178007986,
+          "parse_seconds": 3.2505827879776916,
+          "commit_seconds": 17.800076873983926,
+          "write_lock_wait_seconds": 8.213752110012138,
+          "search_requests": 10,
+          "search_seconds": 0.32856103500307654,
+          "closure_bundles": 0,
+          "closure_budget_skips": 0,
+          "database_bytes": 6377384,
+          "disk_free_bytes": 942857109504,
+          "model_http_attempts": 0,
+          "llm_calls": 0,
+          "embedding_calls": 0,
+          "model_retries": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "embedding_tokens": 0,
+          "model_seconds": 0.0,
+          "rejected_anchors": 0,
+          "sampled_model_input_bytes": 0
+        }
+      }
+    }
+  ],
+  "scale": [],
+  "source_sha256": {
+    "src/forgetrace/api.py": "09ab4c4e561b3caed51ae08f781e558f23b004a49824fcb376466498b6069894",
+    "src/forgetrace/config.py": "98e3ef5092281cf17b9987c118086e8fc8dc595bcedb215dc44d870510d4bfb5",
+    "src/forgetrace/models.py": "01a80f540e8bbc141c98a31c030759de26614bcb390a0fe3c7cd9c4ff449af3b",
+    "src/forgetrace/parsing.py": "89e707aa97454acaf91529f0b3003765e2770f75125127c98f4f2c82613326cb",
+    "src/forgetrace/retrieval.py": "012d1303980a6f28177e3093f271b55f4de7904c5d9b5581e1f90f34f13df0a0",
+    "src/forgetrace/storage.py": "e8e71e08be0dc345da1d2466dae246ec2d0ecbb766cb5860ad5a0444e4f4ca80",
+    "src/forgetrace/validation.py": "f81ee61c219bca9127e820d2af363b98fa4af9909ab084badabc50c4bbf9d675",
+    "src/forgetrace/__init__.py": "24b1a52cb0eb227afdae0f1ef848ef7a5542ccc332bf71721d2591fff00d63fa"
+  },
+  "revision_note": "Historical diagnostic. Source hashes were collected at end only; scale overlapped later source-file edits. These hashes do not certify the loaded runtime revision. Initial raw shared parser overhead; final raw removes structured parsing. Consult frozen final reports for final-code measurements."
+}

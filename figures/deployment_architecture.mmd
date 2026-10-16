@@ -1,0 +1,8 @@
+flowchart LR
+    AML["Official AML Platform<br/>Add / Search · Fixed Executor"] -->|"Public HTTP(S), Memory Key"| SG["Cloud Firewall<br/>Allow 8005 or HTTPS 443"]
+    SG --> API["ForgeTrace Container<br/>Host 8005 → App 8000<br/>One Worker · Bounded Concurrency"]
+    API -->|"atomic commit before 200"| DB[("Persistent forgetrace_data<br/>SQLite + WAL + Indexes")]
+    API -->|"HTTPS outbound, separate Model Key"| MINI["gpt-4o-mini<br/>Add Source Quotes"]
+    API -. "optional configured v4" .-> EMB["text-embedding-v4"]
+    ENV["Private .env<br/>Memory Key ≠ Model Key"] --> API
+    OP["Operator<br/>Health · Authenticated Metrics<br/>Backup · Frozen Version"] --> API

@@ -1,0 +1,9 @@
+{
+  "status": "not_run",
+  "real_model_calls": 0,
+  "official_smoke": "not_run",
+  "official_full": "not_run",
+  "kind": "synthetic_real_model_preflight_not_cambench_result",
+  "authorized_usd_limit": 0.1,
+  "reason": "Configure OPENAI_API_KEY in the new private .env; do not paste it into chat"
+}

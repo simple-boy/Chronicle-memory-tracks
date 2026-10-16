@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "markdown_files": 17,
+  "relative_links_checked": 55,
+  "python_files_compiled": 21,
+  "python_syntax": "passed",
+  "figures": {
+    "figures/method_overview.png": {
+      "width": 1672,
+      "height": 941,
+      "bytes": 1924013,
+      "sha256": "ed7b15264532c6de6da6030addfa2bec15b4dd003a7eb77928c49f6626d30741"
+    },
+    "figures/deployment_architecture.png": {
+      "width": 1672,
+      "height": 941,
+      "bytes": 1695900,
+      "sha256": "578fce3479b4cdd8b0f716413f8f1e94942645482daf6f211ea6be90edef684f"
+    }
+  },
+  "errors": [],
+  "network_calls": 0,
+  "model_calls": 0,
+  "limitations": "Checks local file targets and balanced fences; does not verify external URLs or render Markdown."
+}

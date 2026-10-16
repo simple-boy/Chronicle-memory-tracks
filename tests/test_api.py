@@ -1,406 +1,364 @@
-"""Real HTTP contract checks on temporary SQLite files with a fake Add provider."""
-
+"""API boundary/admission tests with injected stores; integration tests use real SQLite."""
 from __future__ import annotations
 
-import base64
-from concurrent.futures import ThreadPoolExecutor
-from contextlib import contextmanager
-import copy
-import io
+import asyncio
+from dataclasses import replace
 import json
+import logging
 from pathlib import Path
 import sqlite3
-import sys
 import tempfile
 import threading
-import time
 import unittest
-from urllib.error import HTTPError
-from urllib.request import Request, urlopen
+from unittest import mock
+import importlib.util
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from PIL import Image
+import httpx
+from starlette.requests import ClientDisconnect
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from app import create_server
-from records import ProviderError
-
-
-TEST_KEY = "http-tests-only-not-a-real-secret"
+from forgetrace.api import create_app
+from forgetrace.config import Settings
 
 
-def png_uri(color="red"):
-    buffer = io.BytesIO()
-    with Image.new("RGB", (12, 10), color) as image:
-        image.save(buffer, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buffer.getvalue()).decode("ascii")
+def payload(request_id="r1", content="Fix get_user_by_id in src/auth.py; TypeError on missing user."):
+    return {"request_id": request_id, "user_id": "u1", "session_id": "s1", "messages": [
+        {"role": "user", "content": content, "timestamp": 1704067200000}]}
 
 
-class FakeAddProvider:
-    """Injected provider: no credentials, networking, or environmental model mode."""
-
-    enabled = True
-
-    def __init__(self, *, delay=0.0, fail_on_call=None):
-        self.calls = 0
-        self.delay = delay
-        self.fail_on_call = fail_on_call
-        self.lock = threading.Lock()
-        self.local = threading.local()
-
-    def config_dict(self):
-        return {"provider": "test-fake", "prompt_version": "http-test-v1"}
-
-    def start_add(self):
-        self.local.usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
-
-    def usage(self):
-        return dict(getattr(self.local, "usage", {"calls": 0}))
-
-    def _record(self):
-        if not hasattr(self.local, "usage"):
-            self.start_add()
-        with self.lock:
-            self.calls += 1
-            call_number = self.calls
-        self.local.usage["calls"] += 1
-        if self.delay:
-            time.sleep(self.delay)
-        if call_number == self.fail_on_call:
-            raise ProviderError("fake provider unavailable")
-        return "contractneedle source indexing hints"
-
-    def index_code(self, text):
-        return self._record()
-
-    def index_text(self, text):
-        return self._record()
-
-    def describe_image(self, data_uri):
-        return self._record()
+def settings(**kwargs):
+    return Settings(api_key="test-private-key", model_mode="offline", min_free_bytes=0, **kwargs)
 
 
-@contextmanager
-def running_server(track, *, model=None, max_request_bytes=64 * 1024):
-    with tempfile.TemporaryDirectory(prefix="chronicle-http-test-") as temporary:
-        db_path = Path(temporary) / "memory.sqlite3"
-        server = create_server(
-            "127.0.0.1", 0, track=track, db_path=str(db_path), api_key=TEST_KEY,
-            model=model, max_request_bytes=max_request_bytes,
-            add_concurrency=1, search_concurrency=4,
-        )
-        # Join request workers on close, so Windows can remove the SQLite files.
-        server.daemon_threads = False
-        thread = threading.Thread(
-            target=server.serve_forever, kwargs={"poll_interval": 0.01}, daemon=True,
-            name=f"http-test-{track}",
-        )
-        thread.start()
-        try:
-            yield server, db_path, f"http://127.0.0.1:{server.server_port}"
-        finally:
-            server.shutdown()
-            thread.join(timeout=5)
-            server.server_close()
-            server.store.close()
-            if thread.is_alive():
-                raise RuntimeError("HTTP test server did not shut down")
+class StubStore:
+    def __init__(self):
+        self.closed_threads, self.worker_threads, self.received = [], [], []
+        self.exception = None
+        self.block = False
+        self.started, self.release = threading.Event(), threading.Event()
+
+    def add(self, value):
+        self.worker_threads.append(threading.get_ident())
+        if self.block:
+            self.started.set()
+            if not self.release.wait(5):
+                raise RuntimeError("test wait timed out")
+        if self.exception:
+            raise self.exception
+        self.received.append(value)
+        return {"success": True, **{key: value[key] for key in ("request_id", "user_id", "session_id")}}
+
+    def search(self, value):
+        self.worker_threads.append(threading.get_ident())
+        return {"data": []}
+
+    def metrics(self):
+        return {"model_calls": 0}
+
+    def health(self):
+        return {"status": "ok", "journal_mode": "wal", "synchronous": "FULL"}
+
+    def close(self):
+        self.closed_threads.append(threading.get_ident())
 
 
-class HTTPContractChecks:
-    """Shared contracts are run independently for each frozen track."""
+class ApiBoundaryTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.store = StubStore()
+        self.settings = settings()
+        self.app = create_app(self.settings, self.store)
+        self.client = httpx.AsyncClient(transport=httpx.ASGITransport(app=self.app), base_url="http://test")
+        self.headers = {"Authorization": "Token test-private-key"}
 
-    track = None
+    async def asyncTearDown(self):
+        await self.client.aclose()
 
-    def setUp(self):
-        self.model = FakeAddProvider()
-        self.runtime = running_server(self.track, model=self.model)
-        self.server, self.db_path, self.base_url = self.runtime.__enter__()
-        self.addCleanup(self.runtime.__exit__, None, None, None)
-        self.image_uri = png_uri()
+    async def post(self, path, value):
+        return await self.client.post(path, json=value, headers=self.headers)
 
-    def source_content(self, text="contractneedle source evidence"):
-        if self.track == "coding":
-            return text + "\n def load_config(raw): return raw\n"
-        return [
-            {"type": "text", "text": text + " first"},
-            {"type": "image_url", "image_url": {"url": self.image_uri}},
-            {"type": "text", "text": " last source part\n"},
-        ]
+    async def test_public_health_private_metrics_and_no_credentials(self):
+        health = await self.client.get("/health")
+        self.assertEqual(health.status_code, 200)
+        self.assertEqual(health.json()["service"], "forgetrace")
+        self.assertEqual(health.json()["track"], "coding")
+        self.assertTrue(health.json()["diagnostic_only"])
+        self.assertFalse(health.json()["submission_ready"])
+        self.assertEqual(len(health.json()["source_sha256"]), 64)
+        self.assertNotIn("test-private-key", health.text)
+        self.assertEqual((await self.client.get("/metrics")).status_code, 401)
+        self.assertEqual((await self.client.get("/metrics", headers=self.headers)).status_code, 200)
 
-    def query_content(self):
-        if self.track == "coding":
-            return "contractneedle load_config"
-        return [
-            {"type": "text", "text": "contractneedle source evidence"},
-            {"type": "image_url", "image_url": {"url": self.image_uri}},
-        ]
+    async def test_auth_before_body_and_three_auth_schemes(self):
+        self.assertEqual((await self.client.post("/add", content=b"bad")).status_code, 401)
+        for headers in ({"Authorization": "Token test-private-key"},
+                        {"Authorization": "Bearer test-private-key"}, {"X-API-Key": "test-private-key"}):
+            response = await self.client.post("/search", json={"user_id": "u", "query": "TypeError", "top_k": 1}, headers=headers)
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual((await self.client.post("/add", json=payload(), headers={"Authorization": "Token wrong"})).status_code, 401)
 
-    def add_body(self, *, request_id="http-write", user_id="http-user", session_id="http-session"):
-        return {
-            "request_id": request_id, "user_id": user_id, "session_id": session_id,
-            "messages": [{"role": "user", "timestamp": 1704067200000,
-                          "content": self.source_content()}],
-        }
+    async def test_ack_preserves_all_message_and_extra_fields(self):
+        value = payload()
+        value["metadata"] = {"opaque": "retained"}
+        value["messages"].append({"role": "assistant", "content": "```python\ndef getUserById(user_id):\n    return None\n```"})
+        response = await self.post("/add", value)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": True, "request_id": "r1", "user_id": "u1", "session_id": "s1"})
+        self.assertEqual(self.store.received, [value])
+        self.assertEqual(self.store.worker_threads, self.store.closed_threads)
 
-    def search_body(self, *, user_id="http-user", top_k=100):
-        return {"query": self.query_content(), "user_id": user_id, "top_k": top_k}
+    async def test_invalid_role_timestamp_and_missing_fields(self):
+        invalid = []
+        for role in ("system", "tool", None, [], {}):
+            value = payload(); value["messages"][0]["role"] = role; invalid.append(value)
+        for stamp in (None, True, 1.5, "1704067200000", 10**30):
+            value = payload(); value["messages"][0]["timestamp"] = stamp; invalid.append(value)
+        for key in ("user_id", "request_id", "session_id", "messages"):
+            value = payload(); del value[key]; invalid.append(value)
+        for value in invalid:
+            self.assertEqual((await self.post("/add", value)).status_code, 422)
+        self.assertEqual(self.store.received, [])
 
-    def request(self, method, path, payload=None, *, auth="x-api-key", raw=None, base_url=None):
-        headers = {"Content-Type": "application/json", "Connection": "close"}
-        if auth == "x-api-key":
-            headers["X-Api-Key"] = TEST_KEY
-        elif auth in {"bearer", "token"}:
-            headers["Authorization"] = auth.title() + " " + TEST_KEY
-        elif auth == "wrong":
-            headers["X-Api-Key"] = "wrong-test-value"
-        elif auth is not None:
-            raise ValueError(f"Unknown test auth mode: {auth}")
-        body = raw if raw is not None else (
-            None if payload is None else json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        )
-        request = Request((base_url or self.base_url) + path, data=body, headers=headers, method=method)
-        try:
-            with urlopen(request, timeout=8) as response:
-                return response.status, json.loads(response.read()), dict(response.headers)
-        except HTTPError as error:
+    async def test_coding_content_is_string_only(self):
+        for content in (None, "", "  ", 12, {}, [], [{"type": "text", "text": "code"}]):
+            self.assertEqual((await self.post("/add", payload(content=content))).status_code, 422)
+        self.assertEqual((await self.post("/add", payload(content="x" * 200000))).status_code, 200)
+
+    async def test_search_top_k_query_and_options(self):
+        base = {"user_id": "u", "query": "TypeError getUserById", "top_k": 100}
+        for top_k in (None, 0, -1, 101, True, 1.5, "1"):
+            self.assertEqual((await self.post("/search", {**base, "top_k": top_k})).status_code, 422)
+        for query in (None, "", " ", [], {}, 123):
+            self.assertEqual((await self.post("/search", {**base, "query": query})).status_code, 422)
+        for options in (None, "A", {}, [""], [1]):
+            self.assertEqual((await self.post("/search", {**base, "options": options})).status_code, 422)
+        self.assertEqual((await self.post("/search", {**base, "options": []})).status_code, 200)
+        self.assertEqual((await self.post("/search", {**base, "options": ["src/auth.py", "tests/test_auth.py"]})).status_code, 200)
+
+    async def test_json_duplicates_nan_unicode_and_content_type(self):
+        headers = {**self.headers, "Content-Type": "application/json"}
+        for raw in (b"{", b'{"x":NaN}', b'{"user_id":"a","user_id":"b"}', b"\xff"):
+            self.assertEqual((await self.client.post("/add", content=raw, headers=headers)).status_code, 400)
+        raw = b'{"request_id":"r","user_id":"u","session_id":"s","messages":[{"role":"user","content":"\\ud800"}]}'
+        self.assertEqual((await self.client.post("/add", content=raw, headers=headers)).status_code, 422)
+        self.assertEqual((await self.post("/add", [])).status_code, 422)
+        self.assertEqual((await self.client.post("/add", content=b"{}", headers=self.headers)).status_code, 415)
+        self.assertEqual((await self.client.post("/add", content=b"{}", headers={**headers, "Content-Encoding": "gzip"})).status_code, 415)
+
+    async def test_declared_streamed_body_limits_and_capacity_recovery(self):
+        app = create_app(replace(self.settings, max_request_bytes=256), self.store)
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            self.assertEqual((await client.post("/add", json=payload(content="x" * 500), headers=self.headers)).status_code, 413)
+            async def chunks():
+                yield b" " * 200
+                yield b" " * 200
+            self.assertEqual((await client.post("/add", content=chunks(), headers={**self.headers, "Content-Type": "application/json"})).status_code, 413)
+            self.assertEqual((await client.post("/search", json={"user_id": "u", "query": "x", "top_k": 1}, headers=self.headers)).status_code, 200)
+
+    async def test_stalled_body_timeout_releases_slot(self):
+        app = create_app(replace(self.settings, read_timeout_seconds=1, max_add_concurrency=1), self.store)
+        async def stalled():
+            yield b'{"x":'
+            await asyncio.sleep(2)
+            yield b"1}"
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            result = await client.post("/add", content=stalled(), headers={**self.headers, "Content-Type": "application/json"})
+            self.assertEqual(result.status_code, 408)
+            self.assertEqual((await client.post("/add", json=payload(), headers=self.headers)).status_code, 200)
+
+    async def test_body_disconnect_is_not_a_second_internal_error(self):
+        app = create_app(replace(self.settings, max_add_concurrency=1), self.store)
+        async def disconnected():
+            yield b'{"request_id":'
+            raise ClientDisconnect()
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            response = await client.post("/add", content=disconnected(), headers={**self.headers, "Content-Type": "application/json"})
+            self.assertEqual(response.status_code, 408)
+            self.assertEqual(response.json(), {"detail": {"reason": "client_disconnected"}})
+            self.assertEqual((await client.post("/add", json=payload(), headers=self.headers)).status_code, 200)
+
+    async def test_concurrency_429_search_independent_and_worker_cleanup(self):
+        self.store.block = True
+        app = create_app(replace(self.settings, max_add_concurrency=1), self.store)
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            first = asyncio.create_task(client.post("/add", json=payload(), headers=self.headers))
+            await asyncio.wait_for(asyncio.to_thread(self.store.started.wait, 3), timeout=4)
             try:
-                return error.code, json.loads(error.read()), dict(error.headers)
+                rejected = await client.post("/add", json=payload("busy"), headers=self.headers)
+                self.assertEqual(rejected.status_code, 429)
+                self.assertEqual(rejected.headers["Retry-After"], "1")
+                self.assertEqual((await client.post("/search", json={"user_id": "u", "query": "x", "top_k": 1}, headers=self.headers)).status_code, 200)
             finally:
-                error.close()
+                self.store.release.set()
+            self.assertEqual((await first).status_code, 200)
+            self.assertEqual((await client.post("/add", json=payload("after"), headers=self.headers)).status_code, 200)
+        self.assertEqual(sorted(self.store.worker_threads), sorted(self.store.closed_threads))
 
-    def count(self, table):
-        allowed = {"raw_messages", "source_records", "memories", "add_requests", "model_usage", "memories_fts"}
-        if table not in allowed:
-            raise ValueError("Unknown test table")
-        connection = sqlite3.connect(self.db_path)
+    async def test_exception_redaction_and_subsequent_requests(self):
+        self.store.exception = RuntimeError("PRIVATE-BODY KEY=secret")
+        response = await self.post("/add", payload())
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.json(), {"detail": {"reason": "internal_error"}})
+        self.store.exception = None
+        self.assertEqual((await self.post("/add", payload())).status_code, 200)
+
+    async def test_storage_failure_retry_after(self):
+        self.store.exception = OSError("SECRET /database/path")
+        response = await self.post("/add", payload())
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.headers["Retry-After"], "1")
+        self.assertNotIn("SECRET", response.text)
+
+    async def test_response_limit_explicit_no_truncation(self):
+        self.store.search = lambda value: {"data": [{"id": "source", "content": "x" * 2000}]}
+        app = create_app(replace(self.settings, max_response_bytes=1024), self.store)
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            response = await client.post("/search", json={"user_id": "u", "query": "x", "top_k": 1}, headers=self.headers)
+            self.assertEqual(response.status_code, 503)
+            self.assertEqual(response.json(), {"detail": {"reason": "response_body_limit"}})
+
+    async def test_log_never_contains_body_identifiers_credentials(self):
+        with self.assertLogs(logging.getLogger("forgetrace"), level="INFO") as captured:
+            await self.post("/add", payload(content="secret-code-never-log"))
+        text = "\n".join(captured.output)
+        for secret in ("secret-code-never-log", "test-private-key", '"u1"', '"r1"', '"s1"'):
+            self.assertNotIn(secret, text)
+        self.assertIn("request_completed", text)
+
+
+class SettingsTests(unittest.TestCase):
+    def test_production_credentials_models_and_offline_diagnostic(self):
+        with self.assertRaises(ValueError):
+            Settings()
+        with self.assertRaises(ValueError):
+            Settings(api_key="private")
+        config = Settings(api_key="private", openai_api_key="upstream-private")
+        self.assertNotIn("private", repr(config))
+        self.assertEqual(config.model_mode, "gpt-4o-mini")
+        self.assertEqual(settings().model_mode, "offline")
+
+    def test_invalid_limits_and_unapproved_models(self):
+        for changes in ({"max_add_concurrency": 0}, {"max_results": 101}, {"model_mode": "other-model"},
+                        {"embedding_mode": "other-embedding"}, {"strategy": "hybrid"},
+                        {"openai_base_url": "https://user:secret@example.com/v1"}, {"api_key": " spaced "}):
+            with self.assertRaises(ValueError):
+                replace(settings(), **changes)
+        with mock.patch.dict("os.environ", {"MEMORY_API_KEY": "private", "MODEL_MODE": "offline", "MAX_ADD_CONCURRENCY": "2"}, clear=True):
+            self.assertEqual(Settings.from_env().max_add_concurrency, 2)
+
+
+class RealStorageApiTests(unittest.IsolatedAsyncioTestCase):
+    """These tests construct the production MemoryStore, not StubStore."""
+    async def asyncSetUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.config = settings(db_path=str(Path(self.directory.name) / "memory.sqlite3"))
+        self.app = create_app(self.config)
+        self.client = httpx.AsyncClient(transport=httpx.ASGITransport(app=self.app), base_url="http://test")
+        self.headers = {"Authorization": "Token test-private-key"}
+
+    async def asyncTearDown(self):
+        await self.client.aclose()
+        self.app.state.store.close()
+        self.directory.cleanup()
+
+    async def post(self, path, value):
+        return await self.client.post(path, json=value, headers=self.headers)
+
+    async def test_immediate_retrieval_and_cross_session_history(self):
+        value = payload(content="unique_auth_evidence src/auth.py get_user_by_id raises TypeError. Guard None before lookup.")
+        self.assertEqual((await self.post("/add", value)).status_code, 200)
+        value2 = payload("r2", "Unrelated src/media.py decode_frame raises ValueError.")
+        value2["session_id"] = "another-session"
+        self.assertEqual((await self.post("/add", value2)).status_code, 200)
+        response = await self.post("/search", {"query": "unique_auth_evidence get_user_by_id", "user_id": "u1", "top_k": 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()["data"]), 1)
+        self.assertIn("unique_auth_evidence", response.json()["data"][0]["content"])
+
+    async def test_real_idempotency_and_request_collision(self):
+        first = await self.post("/add", payload())
+        retry = await self.post("/add", payload())
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(first.json(), retry.json())
+        conflict = await self.post("/add", payload(content="Different original code evidence."))
+        self.assertEqual(conflict.status_code, 409)
+        rows = (await self.post("/search", {"query": "get_user_by_id", "user_id": "u1", "top_k": 100})).json()["data"]
+        self.assertEqual(len(rows), 1)
+
+    async def test_real_user_isolation_and_empty_irrelevant(self):
+        self.assertEqual((await self.post("/add", payload())).status_code, 200)
+        other = {**payload("other", "private_other_user_secret TypeError get_user_by_id"), "user_id": "u2"}
+        self.assertEqual((await self.post("/add", other)).status_code, 200)
+        response = await self.post("/search", {"query": "TypeError get_user_by_id", "user_id": "u1", "top_k": 100})
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("private_other_user_secret", response.text)
+        absent = await self.post("/search", {"query": "TypeError", "user_id": "missing-user", "top_k": 100})
+        self.assertEqual(absent.json(), {"data": []})
+        irrelevant = await self.post("/search", {"query": "xyzzzz_utterly_unrelated", "user_id": "u1", "top_k": 100})
+        self.assertEqual(irrelevant.json(), {"data": []})
+
+    async def test_reopen_same_sqlite_preserves_stable_source_id(self):
+        self.assertEqual((await self.post("/add", payload())).status_code, 200)
+        query = {"query": "get_user_by_id", "user_id": "u1", "top_k": 1}
+        before = (await self.post("/search", query)).json()
+        reopened = create_app(self.config)
         try:
-            return connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
+            async with httpx.AsyncClient(transport=httpx.ASGITransport(app=reopened), base_url="http://test") as client:
+                after = await client.post("/search", json=query, headers=self.headers)
+                self.assertEqual(after.status_code, 200)
+                self.assertEqual(after.json(), before)
         finally:
-            connection.close()
+            reopened.state.store.close()
 
-    def assert_error(self, status, body, expected):
-        self.assertEqual(status, expected)
-        self.assertIsInstance(body.get("detail"), dict)
-        self.assertIsInstance(body["detail"].get("reason"), str)
-        self.assertTrue(body["detail"]["reason"])
-        self.assertIsNot(body.get("success"), True)
+    async def test_long_code_input_exact_identifier_and_top_k(self):
+        content = "\n".join(f"# log line {i}: get_user_by_id handles user_id in src/auth/middleware.py" for i in range(1800))
+        content += "\nunique_long_code_end_marker: pytest tests/test_auth.py -q\n2 passed in 0.12s\n"
+        self.assertEqual((await self.post("/add", payload(content=content))).status_code, 200)
+        result = await self.post("/search", {"query": "unique_long_code_end_marker", "user_id": "u1", "top_k": 1})
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(len(result.json()["data"]), 1)
+        self.assertIn("unique_long_code_end_marker", result.json()["data"][0]["content"])
 
-    def test_health_is_public_and_reports_bound_track(self):
-        status, body, headers = self.request("GET", "/health", auth=None)
-        self.assertEqual(status, 200)
-        self.assertEqual(body["status"], "ok")
-        self.assertEqual(body["track"], self.track)
-        self.assertTrue(headers["Content-Type"].startswith("application/json"))
-        self.assertEqual(self.model.calls, 0)
-
-    def test_all_declared_auth_schemes_allow_add_and_search(self):
-        for auth in ("token", "bearer", "x-api-key"):
-            with self.subTest(auth=auth):
-                status, body, _ = self.request("POST", "/add", self.add_body(request_id=auth), auth=auth)
-                self.assertEqual(status, 200)
-                self.assertIs(body["success"], True)
-                status, body, _ = self.request("POST", "/search", self.search_body(), auth=auth)
-                self.assertEqual(status, 200)
-                self.assertTrue(body["data"])
-
-    def test_missing_and_wrong_credentials_cannot_write_or_read(self):
-        for auth in (None, "wrong"):
-            for path, payload in (("/add", self.add_body()), ("/search", self.search_body())):
-                with self.subTest(auth=auth, path=path):
-                    status, body, _ = self.request("POST", path, payload, auth=auth)
-                    self.assert_error(status, body, 401)
-        self.assertEqual(self.count("memories"), 0)
-        self.assertEqual(self.model.calls, 0)
-
-    def test_ids_are_echoed_exactly_and_whitespace_is_an_isolation_boundary(self):
-        add = self.add_body(request_id=" request-edge \t", user_id=" user-edge \n", session_id=" session-edge ")
-        status, body, _ = self.request("POST", "/add", add)
-        self.assertEqual(status, 200)
-        self.assertIs(body["success"], True)
-        for field in ("request_id", "user_id", "session_id"):
-            self.assertEqual(body[field], add[field])
-        status, result, _ = self.request("POST", "/search", self.search_body(user_id=add["user_id"]))
-        self.assertEqual(status, 200)
-        self.assertTrue(result["data"])
-        for other_user in (add["user_id"].strip(), "different-user"):
-            status, result, _ = self.request("POST", "/search", self.search_body(user_id=other_user))
-            self.assertEqual(status, 200)
-            self.assertEqual(result, {"data": []})
-
-    def test_retry_is_a_noop_and_changed_body_or_session_is_conflict(self):
-        add = self.add_body()
-        status, body, _ = self.request("POST", "/add", add)
-        self.assertEqual(status, 200)
-        model_calls = self.model.calls
-        status, retried, _ = self.request("POST", "/add", copy.deepcopy(add))
-        self.assertEqual(status, 200)
-        self.assertEqual(retried, body)
-        self.assertEqual(self.model.calls, model_calls)
-        changed = copy.deepcopy(add)
-        changed["messages"][0]["content"] = self.source_content("changed source")
-        changed_session = {**add, "session_id": "changed-session"}
-        changed_payloads = [changed, changed_session]
-        if self.track == "multimodal":
-            changed_image = copy.deepcopy(add)
-            changed_image["messages"][0]["content"][1]["image_url"]["url"] = png_uri("blue")
-            changed_payloads.append(changed_image)
-        for payload in changed_payloads:
-            status, error, _ = self.request("POST", "/add", payload)
-            self.assert_error(status, error, 409)
-        self.assertEqual(self.model.calls, model_calls)
-        for table in ("raw_messages", "source_records", "memories", "add_requests", "model_usage"):
-            self.assertEqual(self.count(table), 1, table)
-
-    def test_track_contract_returns_at_most_100_source_records_with_stable_ids(self):
-        add = self.add_body()
-        add["messages"] = [
-            {"role": "user" if index % 2 == 0 else "assistant",
-             "content": self.source_content(f"contractneedle source record {index}")}
-            for index in range(110)
-        ]
-        self.assertEqual(self.request("POST", "/add", add)[0], 200)
-        status, result, _ = self.request("POST", "/search", self.search_body(top_k=100))
-        self.assertEqual(status, 200)
-        self.assertEqual(len(result["data"]), 100)
-        self.assertEqual(len({row["id"] for row in result["data"]}), 100)
-        for row in result["data"]:
-            self.assertIsInstance(row["id"], str)
-            self.assertTrue(row["id"])
-            self.assertNotIn("answer", row)
-            if self.track == "coding":
-                self.assertIsInstance(row["content"], str)
-                self.assertIn("contractneedle source record", row["content"])
-                self.assertIn("def load_config", row["content"])
-            else:
-                self.assertEqual([part["type"] for part in row["content"]], ["text", "image_url", "text"])
-                self.assertEqual(row["content"][1]["image_url"]["url"], self.image_uri)
-                self.assertEqual(row["content"][2]["text"], " last source part\n")
-        status, repeated, _ = self.request("POST", "/search", self.search_body(top_k=100))
-        self.assertEqual(status, 200)
-        self.assertEqual([row["id"] for row in repeated["data"]], [row["id"] for row in result["data"]])
-        for top_k in (1, 7):
-            status, limited, _ = self.request("POST", "/search", self.search_body(top_k=top_k))
-            self.assertEqual(status, 200)
-            self.assertEqual(len(limited["data"]), top_k)
-
-    def test_invalid_add_content_role_timestamp_and_envelope_are_422(self):
-        invalid = []
-        for messages in (None, [], "not messages", [{"role": "system", "content": self.source_content()}]):
-            invalid.append({**self.add_body(), "messages": messages})
-        bad_content = [None, "", " \t\n", {}, 7]
-        if self.track == "coding":
-            bad_content.append([{"type": "text", "text": "code"}])
-        else:
-            bad_content.extend([
-                [], [{"type": "text", "text": " "}],
-                [{"type": "image_url", "image_url": {"url": "https://example.com/image.png"}}],
-                [{"type": "image_url", "image_url": {"url": "data:image/png;base64,%%%"}}],
-                [{"type": "unknown", "text": "unsupported"}],
-            ])
-        for content in bad_content:
-            invalid.append({**self.add_body(), "messages": [{"role": "user", "content": content}]})
-        for timestamp in (True, 1.5, "1704067200000", 10 ** 50):
-            invalid.append({**self.add_body(), "messages": [{"role": "user", "content": self.source_content(),
-                                                           "timestamp": timestamp}]})
-        for field in ("request_id", "user_id", "session_id"):
-            invalid.append({**self.add_body(), field: " \t"})
-        for index, payload in enumerate(invalid):
-            with self.subTest(index=index):
-                status, body, _ = self.request("POST", "/add", payload)
-                self.assert_error(status, body, 422)
-        self.assertEqual(self.count("raw_messages"), 0)
-        self.assertEqual(self.count("memories"), 0)
-        self.assertEqual(self.count("add_requests"), 0)
-        self.assertEqual(self.model.calls, 0)
-
-    def test_invalid_search_query_options_and_top_k_are_422(self):
-        invalid = []
-        queries = (None, "", " \t", [], {}, [{"type": "text", "text": ""}])
-        for query in queries:
-            invalid.append({**self.search_body(), "query": query})
-        for options in ("A", {"A": "choice"}, [1], [""], [" "]):
-            invalid.append({**self.search_body(), "options": options})
-        for top_k in (None, True, 0, -1, 101, 1.5, "100"):
-            invalid.append(self.search_body(top_k=top_k))
-        for user_id in (None, "", " \t"):
-            invalid.append(self.search_body(user_id=user_id))
-        for index, payload in enumerate(invalid):
-            with self.subTest(index=index):
-                status, body, _ = self.request("POST", "/search", payload)
-                self.assert_error(status, body, 422)
-        self.assertEqual(self.model.calls, 0)
-
-    def test_malformed_json_nonobject_and_invalid_utf8_are_422(self):
-        for raw in (b"{not-json", b"[]", b"null", b'{"query":"\xff"}'):
-            for path in ("/add", "/search"):
-                with self.subTest(raw=raw, path=path):
-                    status, body, _ = self.request("POST", path, raw=raw)
-                    self.assert_error(status, body, 422)
-        self.assertEqual(self.count("memories"), 0)
-        self.assertEqual(self.model.calls, 0)
-
-    def test_oversize_body_returns_413_without_processing(self):
-        with running_server(self.track, model=self.model, max_request_bytes=128) as (_, _, base_url):
-            for path in ("/add", "/search"):
-                status, body, _ = self.request("POST", path, {"oversized": "x" * 512}, base_url=base_url)
-                self.assert_error(status, body, 413)
-        self.assertEqual(self.model.calls, 0)
-
-    def test_provider_error_is_503_without_acknowledgement_or_partial_write(self):
-        self.model.fail_on_call = 2
-        add = self.add_body()
-        add["messages"].append({"role": "assistant", "content": self.source_content("second evidence")})
-        status, body, _ = self.request("POST", "/add", add)
-        self.assert_error(status, body, 503)
-        self.assertEqual(self.model.calls, 2)
-        for table in ("raw_messages", "source_records", "memories", "add_requests", "model_usage"):
-            self.assertEqual(self.count(table), 0, table)
-        if self.server.store._fts_enabled:
-            self.assertEqual(self.count("memories_fts"), 0)
-        status, result, _ = self.request("POST", "/search", self.search_body())
-        self.assertEqual(status, 200)
-        self.assertEqual(result, {"data": []})
-        self.assertEqual(self.model.calls, 2)
-
-    def test_unknown_get_and_post_paths_are_404(self):
-        for method, payload in (("GET", None), ("POST", {})):
-            status, body, _ = self.request(method, "/unknown", payload)
-            self.assert_error(status, body, 404)
-        self.assertEqual(self.model.calls, 0)
-
-    def test_parallel_duplicate_adds_retry_rate_limits_and_commit_one_record_set(self):
-        self.model.delay = 0.10
-        barrier = threading.Barrier(6)
-        add = self.add_body(request_id="parallel-write")
-
-        def submit():
-            barrier.wait(timeout=5)
-            return self.request("POST", "/add", add)
-
-        with ThreadPoolExecutor(max_workers=6) as pool:
-            results = list(pool.map(lambda _: submit(), range(6)))
-        for status, body, headers in results:
-            self.assertIn(status, (200, 429))
-            if status == 429:
-                self.assertEqual(headers.get("Retry-After"), "1")
-                status, body, _ = self.request("POST", "/add", add)
-                self.assertEqual(status, 200)
-            self.assertIs(body["success"], True)
-        self.assertEqual(self.model.calls, 1)
-        for table in ("raw_messages", "source_records", "memories", "add_requests", "model_usage"):
-            self.assertEqual(self.count(table), 1, table)
-        status, result, _ = self.request("POST", "/search", self.search_body())
-        self.assertEqual(status, 200)
-        self.assertEqual(len(result["data"]), 1)
+    async def test_two_concurrent_real_writes_then_read(self):
+        for batch in range(4):
+            outcomes = await asyncio.gather(*[self.post("/add", payload(f"concurrent-{batch}-{i}", f"concurrent_api_{batch}_{i} src/auth.py handles None user.")) for i in range(2)])
+            self.assertEqual([result.status_code for result in outcomes], [200, 200])
+        result = await self.post("/search", {"query": "concurrent_api_3_1", "user_id": "u1", "top_k": 1})
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("concurrent_api_3_1", result.json()["data"][0]["content"])
 
 
-class CodingHTTPTests(HTTPContractChecks, unittest.TestCase):
-    track = "coding"
-
-
-class MultimodalHTTPTests(HTTPContractChecks, unittest.TestCase):
-    track = "multimodal"
+class SelfcheckSecurityTests(unittest.TestCase):
+    def test_memory_key_is_not_forwarded_to_redirect_origin(self):
+        spec = importlib.util.spec_from_file_location("forge_selfcheck", Path(__file__).parents[1] / "scripts" / "smoke_test.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        calls = []
+        class Destination(BaseHTTPRequestHandler):
+            def do_GET(self):
+                calls.append(self.headers.get("Authorization"))
+                self.send_response(200); self.end_headers(); self.wfile.write(b"{}")
+            do_POST = do_GET
+            def log_message(self, *args): pass
+        destination = ThreadingHTTPServer(("127.0.0.1", 0), Destination)
+        class Redirect(BaseHTTPRequestHandler):
+            def do_POST(self):
+                self.send_response(302)
+                self.send_header("Location", "http://127.0.0.1:" + str(destination.server_port) + "/sink")
+                self.send_header("Content-Type", "application/json")
+                self.end_headers(); self.wfile.write(b'{"redirect":"blocked"}')
+            def log_message(self, *args): pass
+        redirect = ThreadingHTTPServer(("127.0.0.1", 0), Redirect)
+        workers = [threading.Thread(target=server.serve_forever, daemon=True) for server in (destination, redirect)]
+        for worker in workers: worker.start()
+        try:
+            status, value, _ = module.request("http://127.0.0.1:" + str(redirect.server_port), "/add", key="synthetic-never-forward", method="POST", payload={})
+            self.assertEqual(status, 302)
+            self.assertEqual(value, {"redirect": "blocked"})
+            self.assertEqual(calls, [])
+        finally:
+            for server in (redirect, destination):
+                server.shutdown(); server.server_close()
+            for worker in workers: worker.join(timeout=3)
 
 
 if __name__ == "__main__":

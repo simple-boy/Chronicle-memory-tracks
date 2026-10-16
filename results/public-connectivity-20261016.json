@@ -1,0 +1,8 @@
+{
+  "base_url": "http://47.111.109.198:8005",
+  "check": "external_GET_health_only",
+  "cloud_deployment": "not_performed",
+  "ready_for_submission": false,
+  "reachable": false,
+  "error_type": "URLError"
+}
